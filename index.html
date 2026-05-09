@@ -7,8 +7,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мастер Баз — Профессиональный парсинг и сбор B2B баз данных</title>
-    <meta name="description" content="База из 10 000 горячих клиентов за 3 часа. Гарантия актуальности 95%. Профессиональный парсинг данных для бизнеса от 3 500₽">
+    <title>Мастер База — Профессиональный парсинг и сбор B2B баз данных</title>
+    <meta name="description" content="База из 10 000 горячих клиентов за 1 час. Гарантия актуальности 95%. Профессиональный парсинг данных для бизнеса от 3 500₽">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -62,6 +62,53 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        /* Header Navigation */
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-white);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-blue);
+        }
+
+        .header-contacts {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .header-contact-link {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .header-contact-link:hover {
+            color: var(--cta-orange);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
         }
 
         .logo {
@@ -1233,7 +1280,20 @@
     <!-- Header -->
     <header class="header">
         <div class="container header-content">
-            <div class="logo">Мастер Баз</div>
+            <div class="logo">Мастер База</div>
+            <nav class="header-nav">
+                <ul class="nav-links">
+                    <li><a href="#services">Услуги</a></li>
+                    <li><a href="#pricing">Тарифы</a></li>
+                    <li><a href="#advantages">Преимущества</a></li>
+                    <li><a href="#cases">Кейсы</a></li>
+                    <li><a href="#contacts">Контакты</a></li>
+                </ul>
+                <div class="header-contacts">
+                    <a href="https://t.me/masterbaza" class="header-contact-link">✈️ @masterbaza</a>
+                    <a href="tel:+79587618389" class="header-contact-link">📞 +7 (958) 761-83-89</a>
+                </div>
+            </nav>
             <a href="#cta-form" class="header-btn">Заказать базу</a>
         </div>
     </header>
@@ -1241,13 +1301,13 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="container hero-content">
-            <h1>База из 10 000 горячих клиентов за 3 часа.<br>Гарантия актуальности 95%</h1>
+            <h1>База из 10 000 горячих клиентов за 1 час.<br>Гарантия актуальности 95%</h1>
             <p class="hero-subtitle">Профессиональный парсинг данных для бизнеса. Работаем с 2018 года. Если данные не устроят — заменим базу бесплатно. От 3 500₽</p>
             <div class="hero-buttons">
                 <a href="#cta-form" class="btn-primary">👉 Получить тестовую базу бесплатно</a>
                 <a href="#pricing" class="btn-secondary">Рассчитать стоимость за 5 минут</a>
             </div>
-            <p class="urgency-text">⚡ Уже собрали 500+ баз для клиентов. Среднее время выполнения — 3 часа</p>
+            <p class="urgency-text">⚡ Уже собрали 46570 баз для клиентов. Среднее время выполнения — от 1 часа</p>
 
             <div class="timer" id="timer">
                 <div class="timer-item">
@@ -1288,7 +1348,7 @@
                 </div>
             </div>
             <div class="solution-box fade-in">
-                ✅ "Мастер Баз" закроет эти проблемы за 24 часа
+                ✅ "Мастер База" закроет эти проблемы за 24 часа
             </div>
         </div>
     </section>
@@ -1396,12 +1456,12 @@
     <!-- Advantages Section -->
     <section class="advantages">
         <div class="container">
-            <h2 class="section-title fade-in">Почему 500+ клиентов выбрали нас</h2>
+            <h2 class="section-title fade-in">Почему 27240+ клиентов выбрали нас</h2>
             <div class="advantages-grid">
                 <div class="advantage-card fade-in">
                     <div class="advantage-icon">⚡</div>
                     <div class="advantage-content">
-                        <h3>Скорость — от 3 часов</h3>
+                        <h3>Скорость — от 1 часа</h3>
                         <p>Не недели, а часы. Ваша база будет готова быстрее, чем вы успеете найти другого подрядчика</p>
                     </div>
                 </div>
@@ -1461,12 +1521,12 @@
                 </div>
                 <div class="process-step fade-in">
                     <div class="step-number">3</div>
-                    <h3>Готовая база (3-24 часа)</h3>
+                    <h3>Готовая база (1-24 часа)</h3>
                     <p>Оплачиваете, получаете полную базу в Excel/CSV. Поддержка 24/7</p>
                 </div>
             </div>
             <div class="process-note fade-in">
-                💡 Нужна база срочно? Напишите в Telegram — сделаем за 3 часа
+                💡 Нужна база срочно? Напишите в Telegram — сделаем за 1 час
             </div>
         </div>
     </section>
@@ -1541,11 +1601,11 @@
         <div class="container">
             <div class="stats-grid">
                 <div class="stat-item fade-in">
-                    <div class="stat-value">500+</div>
+                    <div class="stat-value">46570+</div>
                     <div class="stat-label">собранных баз</div>
                 </div>
                 <div class="stat-item fade-in">
-                    <div class="stat-value">300+</div>
+                    <div class="stat-value">27240+</div>
                     <div class="stat-label">довольных клиентов</div>
                 </div>
                 <div class="stat-item fade-in">
@@ -1557,7 +1617,7 @@
                     <div class="stat-label">повторных обращений</div>
                 </div>
                 <div class="stat-item fade-in">
-                    <div class="stat-value">3 часа</div>
+                    <div class="stat-value">от 1 часа</div>
                     <div class="stat-label">среднее время выполнения</div>
                 </div>
             </div>
@@ -1654,7 +1714,7 @@
                     </div>
                     <div class="form-group">
                         <label for="message">Какие данные нужны?</label>
-                        <textarea id="message" name="message" placeholder="Например: строительные компании Москвы, 500 шт"></textarea>
+                        <textarea id="message" name="message" placeholder="Опишите подробно ваше ТЗ: какие нужны компании, категория или рубрика. Напишите для чего вам база (обзвон / рассылка или реклама), а также напишите регионы которые нужны."></textarea>
                     </div>
                     <button type="submit" class="btn-primary form-submit">🚀 Получить тестовую базу</button>
                 </form>
@@ -1679,7 +1739,7 @@
                         <span class="faq-icon">+</span>
                     </div>
                     <div class="faq-answer">
-                        <p>Стандартный срок — 3-24 часа в зависимости от объема. Срочные заказы (от 3 часов) без доплаты.</p>
+                        <p>Стандартный срок — 1-24 часа в зависимости от объема. Срочные заказы (от 1 часа) без доплаты.</p>
                     </div>
                 </div>
                 <div class="faq-item fade-in">
@@ -1728,16 +1788,16 @@
             <div class="contacts-content fade-in">
                 <h2 class="section-title">Остались вопросы? Давайте обсудим вашу задачу</h2>
                 <ul class="contact-list">
-                    <li>📱 Telegram: <a href="https://t.me/master_baza">@master_baza</a> (отвечаем за 2 минуты)</li>
-                    <li>📞 Телефон: <a href="tel:+70000000000">+7 (XXX) XXX-XX-XX</a></li>
+                    <li>📱 Telegram: <a href="https://t.me/masterbaza">@masterbaza</a> (отвечаем за 2 минуты)</li>
+                    <li>📞 Телефон: <a href="tel:+79587618389">+7 (958) 761-83-89</a></li>
                     <li>✉️ Email: <a href="mailto:info@master-baza.ru">info@master-baza.ru</a></li>
                     <li>⏰ Режим: работаем 24/7</li>
                 </ul>
                 <div class="messenger-buttons">
-                    <a href="https://t.me/master_baza" class="messenger-btn telegram">
+                    <a href="https://t.me/masterbaza" class="messenger-btn telegram">
                         ✈️ Написать в Telegram
                     </a>
-                    <a href="https://wa.me/70000000000" class="messenger-btn whatsapp">
+                    <a href="https://wa.me/79587618389" class="messenger-btn whatsapp">
                         💬 Написать в WhatsApp
                     </a>
                 </div>
@@ -1749,7 +1809,7 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-logo">Мастер Баз</div>
+                <div class="footer-logo">Мастер База</div>
                 <div class="footer-links">
                     <a href="#">Политика конфиденциальности</a>
                     <a href="#">Договор оферты</a>
@@ -1843,7 +1903,7 @@
 
         // Chat Widget
         document.getElementById('chatWidget').addEventListener('click', () => {
-            window.location.href = 'https://t.me/master_baza';
+            window.location.href = 'https://t.me/masterbaza';
         });
 
         // Exit Intent Popup
@@ -1874,12 +1934,26 @@
 
         // Notification Toast
         const names = ['Иван из Москвы', 'Анна из СПб', 'Сергей из Казани', 'Ольга из Екатеринбурга', 'Дмитрий из Новосибирска'];
+        const contactsRange = [5000, 10000, 15000, 25000, 50000, 100000, 250000, 500000, 1000000, 2000000];
+
+        function formatContacts(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(0) + 'M';
+            } else if (num >= 1000) {
+                return (num / 1000).toFixed(0) + 'K';
+            }
+            return num.toString();
+        }
 
         function showNotification() {
             const notification = document.getElementById('notification');
             const notifName = document.getElementById('notifName');
 
-            notifName.textContent = names[Math.floor(Math.random() * names.length)];
+            const randomName = names[Math.floor(Math.random() * names.length)];
+            const randomContacts = contactsRange[Math.floor(Math.random() * contactsRange.length)];
+            const formattedContacts = formatContacts(randomContacts);
+
+            notifName.innerHTML = `${randomName}<br>только что заказал базу<br><span style="color: var(--cta-orange); font-weight: 700;">${formattedContacts} контактов</span>`;
             notification.style.display = 'flex';
 
             setTimeout(() => {
