@@ -1,0 +1,1949 @@
+--- index.html (原始)
+
+
++++ index.html (修改后)
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мастер Баз — Профессиональный парсинг и сбор B2B баз данных</title>
+    <meta name="description" content="База из 10 000 горячих клиентов за 3 часа. Гарантия актуальности 95%. Профессиональный парсинг данных для бизнеса от 3 500₽">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-dark: #1a1f3a;
+            --primary-darker: #0f1221;
+            --accent-purple: #7c3aed;
+            --accent-blue: #3b82f6;
+            --cta-orange: #f97316;
+            --cta-green: #10b981;
+            --text-white: #ffffff;
+            --text-gray: #d1d5db;
+            --text-light: #9ca3af;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-darker) 100%);
+            color: var(--text-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Sticky Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 31, 58, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-btn {
+            background: var(--cta-orange);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .header-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(249, 115, 22, 0.4);
+        }
+
+        /* Promo Bar */
+        .promo-bar {
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-blue));
+            text-align: center;
+            padding: 10px;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 140px 0 80px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.3) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(5deg); }
+        }
+
+        .hero-content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 5vw, 64px);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--text-white) 0%, var(--text-gray) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(16px, 2vw, 20px);
+            color: var(--text-gray);
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .btn-primary {
+            background: var(--cta-orange);
+            color: white;
+            padding: 18px 36px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(249, 115, 22, 0.5);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-white);
+            padding: 18px 36px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 18px;
+            border: 2px solid var(--accent-purple);
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-purple);
+            transform: translateY(-3px);
+        }
+
+        .urgency-text {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+        .timer {
+            display: inline-flex;
+            gap: 15px;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(124, 58, 237, 0.2);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .timer-item {
+            text-align: center;
+        }
+
+        .timer-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--cta-orange);
+        }
+
+        .timer-label {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        /* Pain Points Section */
+        .pain-points {
+            padding: 100px 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .section-title {
+            font-size: clamp(28px, 4vw, 48px);
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .pain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .pain-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .pain-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-purple);
+        }
+
+        .pain-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .pain-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .pain-card p {
+            color: var(--text-gray);
+        }
+
+        .solution-box {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin-top: 40px;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 100px 0;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px 30px;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-blue);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
+        }
+
+        .service-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .service-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        .service-card ul {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .service-card li {
+            color: var(--text-gray);
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .service-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--cta-green);
+            font-weight: 700;
+        }
+
+        .service-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--cta-orange);
+        }
+
+        /* Pricing Section */
+        .pricing {
+            padding: 100px 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            align-items: start;
+        }
+
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .pricing-card.popular {
+            border-color: var(--cta-orange);
+            transform: scale(1.05);
+        }
+
+        .pricing-card.popular::before {
+            content: 'ХИТ ПРОДАЖ';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--cta-orange);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .pricing-card.popular:hover {
+            transform: scale(1.05) translateY(-5px);
+        }
+
+        .pricing-card h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .pricing-price {
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--cta-orange);
+            margin-bottom: 30px;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .pricing-features li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pricing-features li::before {
+            content: '✓';
+            color: var(--cta-green);
+            font-weight: 700;
+        }
+
+        .pricing-card .btn-primary {
+            width: 100%;
+            text-align: center;
+        }
+
+        .pricing-note {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--text-gray);
+        }
+
+        .pricing-note a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+
+        /* Advantages Section */
+        .advantages {
+            padding: 100px 0;
+        }
+
+        .advantages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .advantage-card {
+            display: flex;
+            gap: 20px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .advantage-card:hover {
+            border-color: var(--accent-purple);
+            transform: translateX(10px);
+        }
+
+        .advantage-icon {
+            font-size: 40px;
+            flex-shrink: 0;
+        }
+
+        .advantage-content h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .advantage-content p {
+            color: var(--text-gray);
+            font-size: 15px;
+        }
+
+        /* Process Section */
+        .process {
+            padding: 100px 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .process-step {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 800;
+            margin: 0 auto 20px;
+        }
+
+        .process-step h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        .process-step p {
+            color: var(--text-gray);
+        }
+
+        .process-note {
+            text-align: center;
+            padding: 30px;
+            background: rgba(124, 58, 237, 0.2);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Cases Section */
+        .cases {
+            padding: 100px 0;
+        }
+
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .case-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .case-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-5px);
+        }
+
+        .case-card h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--accent-blue);
+        }
+
+        .case-item {
+            margin-bottom: 15px;
+        }
+
+        .case-label {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .case-value {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .case-effect {
+            background: rgba(16, 185, 129, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .case-effect strong {
+            color: var(--cta-green);
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 40px;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 20px;
+        }
+
+        .stat-value {
+            font-size: 56px;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 100px 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .testimonial-text {
+            font-size: 16px;
+            font-style: italic;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .author-info strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .author-info span {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        /* Comparison Section */
+        .comparison {
+            padding: 100px 0;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .comparison-column {
+            padding: 40px;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        .comparison-before {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .comparison-after {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .comparison-column h3 {
+            font-size: 24px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .comparison-list {
+            list-style: none;
+        }
+
+        .comparison-list li {
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .comparison-result {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            border-radius: 16px;
+            margin-top: 40px;
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        /* CTA Form Section */
+        .cta-form {
+            padding: 100px 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-title {
+            font-size: 32px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .form-subtitle {
+            text-align: center;
+            color: var(--text-gray);
+            margin-bottom: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 18px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: var(--text-white);
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 20px;
+            font-size: 20px;
+        }
+
+        .form-security {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .form-triggers {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .trigger-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-gray);
+            font-size: 14px;
+        }
+
+        /* FAQ Section */
+        .faq {
+            padding: 100px 0;
+        }
+
+        .faq-grid {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: var(--accent-purple);
+        }
+
+        .faq-question {
+            padding: 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .faq-answer {
+            padding: 0 25px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            color: var(--text-gray);
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 0 25px 25px;
+            max-height: 500px;
+        }
+
+        .faq-icon {
+            font-size: 24px;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        /* Contact Section */
+        .contacts {
+            padding: 100px 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .contacts-content {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-list {
+            list-style: none;
+            margin: 40px 0;
+        }
+
+        .contact-list li {
+            padding: 15px 0;
+            font-size: 18px;
+        }
+
+        .contact-list a {
+            color: var(--text-white);
+            text-decoration: none;
+        }
+
+        .contact-list a:hover {
+            color: var(--accent-blue);
+        }
+
+        .messenger-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .messenger-btn {
+            padding: 18px 36px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .messenger-btn.telegram {
+            background: #0088cc;
+            color: white;
+        }
+
+        .messenger-btn.whatsapp {
+            background: #25D366;
+            color: white;
+        }
+
+        .messenger-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Footer */
+        .footer {
+            padding: 60px 0 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-gray);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-white);
+        }
+
+        .footer-copyright {
+            text-align: center;
+            color: var(--text-light);
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Scroll to Top Button */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--cta-orange);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+            border: none;
+            color: white;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(249, 115, 22, 0.5);
+        }
+
+        /* Chat Bot Widget */
+        .chat-widget {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            background: var(--accent-purple);
+            padding: 15px 25px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 998;
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.4);
+        }
+
+        .chat-widget:hover {
+            transform: translateY(-3px);
+        }
+
+        .chat-widget-text {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .chat-widget-icon {
+            font-size: 24px;
+        }
+
+        /* Exit Intent Popup */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .popup-content {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-darker));
+            padding: 50px;
+            border-radius: 24px;
+            max-width: 500px;
+            text-align: center;
+            border: 1px solid rgba(124, 58, 237, 0.5);
+            position: relative;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        .popup-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .popup-text {
+            color: var(--text-gray);
+            margin-bottom: 30px;
+        }
+
+        .popup-form input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: var(--text-white);
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .popup-form button {
+            width: 100%;
+            padding: 15px;
+            background: var(--cta-orange);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 120px 0 60px;
+            }
+
+            .timer {
+                flex-wrap: wrap;
+            }
+
+            .pricing-card.popular {
+                transform: scale(1);
+            }
+
+            .pricing-card.popular:hover {
+                transform: translateY(-5px);
+            }
+
+            .form-container {
+                padding: 30px 20px;
+            }
+
+            .messenger-buttons {
+                flex-direction: column;
+            }
+
+            .messenger-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .chat-widget {
+                display: none;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Notification Toast */
+        .notification {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: rgba(26, 31, 58, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(124, 58, 237, 0.5);
+            display: none;
+            align-items: center;
+            gap: 15px;
+            z-index: 997;
+            max-width: 350px;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .notification-icon {
+            font-size: 24px;
+        }
+
+        .notification-text {
+            font-size: 14px;
+            color: var(--text-gray);
+        }
+
+        .notification-text strong {
+            color: var(--text-white);
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Promo Bar -->
+    <div class="promo-bar">
+        🔥 Скидка 20% на первый заказ до конца недели
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">Мастер Баз</div>
+            <a href="#cta-form" class="header-btn">Заказать базу</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-content">
+            <h1>База из 10 000 горячих клиентов за 3 часа.<br>Гарантия актуальности 95%</h1>
+            <p class="hero-subtitle">Профессиональный парсинг данных для бизнеса. Работаем с 2018 года. Если данные не устроят — заменим базу бесплатно. От 3 500₽</p>
+            <div class="hero-buttons">
+                <a href="#cta-form" class="btn-primary">👉 Получить тестовую базу бесплатно</a>
+                <a href="#pricing" class="btn-secondary">Рассчитать стоимость за 5 минут</a>
+            </div>
+            <p class="urgency-text">⚡ Уже собрали 500+ баз для клиентов. Среднее время выполнения — 3 часа</p>
+
+            <div class="timer" id="timer">
+                <div class="timer-item">
+                    <div class="timer-value" id="hours">23</div>
+                    <div class="timer-label">часов</div>
+                </div>
+                <div class="timer-item">
+                    <div class="timer-value" id="minutes">59</div>
+                    <div class="timer-label">минут</div>
+                </div>
+                <div class="timer-item">
+                    <div class="timer-value" id="seconds">59</div>
+                    <div class="timer-label">секунд</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pain Points Section -->
+    <section class="pain-points">
+        <div class="container">
+            <h2 class="section-title fade-in">Узнаете свою ситуацию?</h2>
+            <div class="pain-grid">
+                <div class="pain-card fade-in">
+                    <div class="pain-icon">❌</div>
+                    <h3>Менеджеры тратят часы на поиск клиентов</h3>
+                    <p>Вместо продаж ищут контакты в интернете, теряют драгоценное время</p>
+                </div>
+                <div class="pain-card fade-in">
+                    <div class="pain-icon">❌</div>
+                    <h3>Холодные звонки не работают</h3>
+                    <p>Базы устарели, номера не отвечают, конверсия стремится к нулю</p>
+                </div>
+                <div class="pain-card fade-in">
+                    <div class="pain-icon">❌</div>
+                    <h3>Конкуренты получают клиентов быстрее</h3>
+                    <p>У них актуальные данные, а вы теряете возможности каждый день</p>
+                </div>
+            </div>
+            <div class="solution-box fade-in">
+                ✅ "Мастер Баз" закроет эти проблемы за 24 часа
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services">
+        <div class="container">
+            <h2 class="section-title fade-in">Какие данные соберем для вас?</h2>
+            <div class="services-grid">
+                <div class="service-card fade-in">
+                    <div class="service-icon">📊</div>
+                    <h3>B2B базы компаний под ключ</h3>
+                    <ul>
+                        <li>Названия, ИНН, ОГРН, адреса, телефоны</li>
+                        <li>Контакты руководителей (директора, закупщики)</li>
+                        <li>Сайты, email, соцсети</li>
+                    </ul>
+                    <div class="service-price">От 3 500₽</div>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="service-icon">🎯</div>
+                    <h3>Селлеры маркетплейсов Ozon/Wildberries</h3>
+                    <ul>
+                        <li>Активные продавцы с оборотом</li>
+                        <li>Контакты для предложений по услугам</li>
+                        <li>Фильтрация по категориям и регионам</li>
+                    </ul>
+                    <div class="service-price">Индивидуально</div>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="service-icon">🏗️</div>
+                    <h3>Отраслевые базы</h3>
+                    <ul>
+                        <li>Строительные компании</li>
+                        <li>Производства</li>
+                        <li>ИП и ООО по ОКВЭД</li>
+                    </ul>
+                    <div class="service-price">Готовые базы 2026 года</div>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="service-icon">🔍</div>
+                    <h3>Парсинг под вашу задачу</h3>
+                    <ul>
+                        <li>Любые сайты и каталоги</li>
+                        <li>Мониторинг цен конкурентов</li>
+                        <li>Сбор отзывов и репутации</li>
+                    </ul>
+                    <div class="service-price">Индивидуальный расчет</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <h2 class="section-title fade-in">Выберите подходящий тариф</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card fade-in">
+                    <h3>💼 МАЛЫЙ БИЗНЕС</h3>
+                    <div class="pricing-price">3 500₽</div>
+                    <ul class="pricing-features">
+                        <li>До 30 000 контактов</li>
+                        <li>До 3 регионов РФ</li>
+                        <li>До 10 категорий</li>
+                        <li>Формат Excel/CSV</li>
+                        <li>Срок: 1-2 дня</li>
+                    </ul>
+                    <a href="#cta-form" class="btn-primary">Заказать</a>
+                    <p style="text-align: center; margin-top: 15px; color: var(--text-light);">Идеально для старта</p>
+                </div>
+                <div class="pricing-card popular fade-in">
+                    <h3>🚀 БИЗНЕС</h3>
+                    <div class="pricing-price">5 000₽</div>
+                    <ul class="pricing-features">
+                        <li>До 500 000 контактов</li>
+                        <li>До 10 регионов</li>
+                        <li>Неограниченное число категорий</li>
+                        <li>Скрипты продаж в подарок</li>
+                        <li>Приоритетная поддержка</li>
+                        <li>Срок: 3-6 часов</li>
+                    </ul>
+                    <a href="#cta-form" class="btn-primary">Заказать</a>
+                    <p style="text-align: center; margin-top: 15px; color: var(--text-light);">Лучшее соотношение цены и объема</p>
+                </div>
+                <div class="pricing-card fade-in">
+                    <h3>🏢 КОРПОРАЦИЯ</h3>
+                    <div class="pricing-price">8 500₽</div>
+                    <ul class="pricing-features">
+                        <li>До 2 000 000 контактов</li>
+                        <li>Вся РФ и СНГ</li>
+                        <li>Подготовка для CRM-систем</li>
+                        <li>Интеграция с AmoCRM</li>
+                        <li>Персональный менеджер</li>
+                        <li>Срок: 1 день</li>
+                    </ul>
+                    <a href="#cta-form" class="btn-primary">Заказать</a>
+                    <p style="text-align: center; margin-top: 15px; color: var(--text-light);">Для крупных отделов продаж</p>
+                </div>
+            </div>
+            <p class="pricing-note fade-in">Нужен другой объем? <a href="#cta-form">Рассчитаем индивидуально →</a></p>
+        </div>
+    </section>
+
+    <!-- Advantages Section -->
+    <section class="advantages">
+        <div class="container">
+            <h2 class="section-title fade-in">Почему 500+ клиентов выбрали нас</h2>
+            <div class="advantages-grid">
+                <div class="advantage-card fade-in">
+                    <div class="advantage-icon">⚡</div>
+                    <div class="advantage-content">
+                        <h3>Скорость — от 3 часов</h3>
+                        <p>Не недели, а часы. Ваша база будет готова быстрее, чем вы успеете найти другого подрядчика</p>
+                    </div>
+                </div>
+                <div class="advantage-card fade-in">
+                    <div class="advantage-icon">📈</div>
+                    <div class="advantage-content">
+                        <h3>Актуальность 95%+</h3>
+                        <p>Проверяем каждый контакт. Если более 5% номеров не отвечают — заменим базу бесплатно</p>
+                    </div>
+                </div>
+                <div class="advantage-card fade-in">
+                    <div class="advantage-icon">🛡️</div>
+                    <div class="advantage-content">
+                        <h3>Гарантия качества</h3>
+                        <p>Работаем с 2018 года. Если данные не устроят — вернем деньги или переделаем</p>
+                    </div>
+                </div>
+                <div class="advantage-card fade-in">
+                    <div class="advantage-icon">🎁</div>
+                    <div class="advantage-content">
+                        <h3>Бесплатный тест</h3>
+                        <p>Перед оплатой пришлем 50-100 записей для проверки. Никаких рисков</p>
+                    </div>
+                </div>
+                <div class="advantage-card fade-in">
+                    <div class="advantage-icon">🔧</div>
+                    <div class="advantage-content">
+                        <h3>Любые источники</h3>
+                        <p>Парсим сайты, каталоги, соцсети, маркетплейсы. Нет невыполнимых задач</p>
+                    </div>
+                </div>
+                <div class="advantage-card fade-in">
+                    <div class="advantage-icon">💰</div>
+                    <div class="advantage-content">
+                        <h3>Выгоднее рынка на 30%</h3>
+                        <p>Прямые инструменты без посредников. Честные цены без скрытых платежей</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process">
+        <div class="container">
+            <h2 class="section-title fade-in">3 шага до готовой базы клиентов</h2>
+            <div class="process-steps">
+                <div class="process-step fade-in">
+                    <div class="step-number">1</div>
+                    <h3>Заявка (2 минуты)</h3>
+                    <p>Оставляете ТЗ: какие компании нужны, регионы, параметры. Или выбираете готовую базу</p>
+                </div>
+                <div class="process-step fade-in">
+                    <div class="step-number">2</div>
+                    <h3>Тест (30 минут)</h3>
+                    <p>Делаем бесплатную выборку 50-100 записей. Вы проверяете качество</p>
+                </div>
+                <div class="process-step fade-in">
+                    <div class="step-number">3</div>
+                    <h3>Готовая база (3-24 часа)</h3>
+                    <p>Оплачиваете, получаете полную базу в Excel/CSV. Поддержка 24/7</p>
+                </div>
+            </div>
+            <div class="process-note fade-in">
+                💡 Нужна база срочно? Напишите в Telegram — сделаем за 3 часа
+            </div>
+        </div>
+    </section>
+
+    <!-- Cases Section -->
+    <section class="cases">
+        <div class="container">
+            <h2 class="section-title fade-in">Реальные результаты наших клиентов</h2>
+            <div class="cases-grid">
+                <div class="case-card fade-in">
+                    <h3>Отдел продаж стройматериалов</h3>
+                    <div class="case-item">
+                        <div class="case-label">Задача:</div>
+                        <div class="case-value">найти 5000 строительных компаний Москвы</div>
+                    </div>
+                    <div class="case-item">
+                        <div class="case-label">Результат:</div>
+                        <div class="case-value">собрали 5200 компаний с телефонами директоров за 2 дня</div>
+                    </div>
+                    <div class="case-effect">
+                        <strong>Эффект:</strong> менеджеры закрыли 23 сделки на 4.2 млн ₽ за первый месяц
+                    </div>
+                </div>
+                <div class="case-card fade-in">
+                    <h3>Поставщик упаковки для маркетплейсов</h3>
+                    <div class="case-item">
+                        <div class="case-label">Задача:</div>
+                        <div class="case-value">найти активных селлеров Ozon и WB</div>
+                    </div>
+                    <div class="case-item">
+                        <div class="case-label">Результат:</div>
+                        <div class="case-value">3000 продавцов с указанием категорий и оборотов</div>
+                    </div>
+                    <div class="case-effect">
+                        <strong>Эффект:</strong> увеличили базу клиентов в 3 раза, рост продаж на 180%
+                    </div>
+                </div>
+                <div class="case-card fade-in">
+                    <h3>CRM-интегратор</h3>
+                    <div class="case-item">
+                        <div class="case-label">Задача:</div>
+                        <div class="case-value">собрать базу производственных компаний для внедрения AmoCRM</div>
+                    </div>
+                    <div class="case-item">
+                        <div class="case-label">Результат:</div>
+                        <div class="case-value">8500 контактов руководителей производств по всей РФ</div>
+                    </div>
+                    <div class="case-effect">
+                        <strong>Эффект:</strong> отдел продаж вышел на 45 встреч в месяц (было 12)
+                    </div>
+                </div>
+                <div class="case-card fade-in">
+                    <h3>Консалтинговое агентство</h3>
+                    <div class="case-item">
+                        <div class="case-label">Задача:</div>
+                        <div class="case-value">мониторинг цен 10 конкурентов ежедневно</div>
+                    </div>
+                    <div class="case-item">
+                        <div class="case-label">Результат:</div>
+                        <div class="case-value">автоматический парсинг с обновлением каждые 6 часов</div>
+                    </div>
+                    <div class="case-effect">
+                        <strong>Эффект:</strong> клиенты экономят 40 часов в месяц на ручном сборе
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item fade-in">
+                    <div class="stat-value">500+</div>
+                    <div class="stat-label">собранных баз</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <div class="stat-value">300+</div>
+                    <div class="stat-label">довольных клиентов</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <div class="stat-value">8 лет</div>
+                    <div class="stat-label">на рынке</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <div class="stat-value">95%</div>
+                    <div class="stat-label">повторных обращений</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <div class="stat-value">3 часа</div>
+                    <div class="stat-label">среднее время выполнения</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section-title fade-in">Что говорят наши клиенты</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card fade-in">
+                    <p class="testimonial-text">"Нужна была срочная база по строительным компаниям. Ребята сделали за 4 часа, качество отличное — 90% номеров отвечают. Теперь работаем постоянно"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">А</div>
+                        <div class="author-info">
+                            <strong>Алексей</strong>
+                            <span>РОП</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card fade-in">
+                    <p class="testimonial-text">"Заказывали парсинг селлеров WB. Получили не просто контакты, а еще и аналитику по категориям. Очень помогло при запуске рекламы"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">М</div>
+                        <div class="author-info">
+                            <strong>Марина</strong>
+                            <span>маркетолог</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card fade-in">
+                    <p class="testimonial-text">"Внедрили AmoCRM с их помощью. Теперь менеджеры не тратят время на поиск клиентов, а сразу звонят. Продажи выросли в 2 раза"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">Д</div>
+                        <div class="author-info">
+                            <strong>Дмитрий</strong>
+                            <span>владелец бизнеса</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Section -->
+    <section class="comparison">
+        <div class="container">
+            <h2 class="section-title fade-in">Что изменится после работы с нами</h2>
+            <div class="comparison-grid">
+                <div class="comparison-column comparison-before fade-in">
+                    <h3>❌ СЕЙЧАС</h3>
+                    <ul class="comparison-list">
+                        <li><span>❌</span> Менеджеры ищут контакты вручную</li>
+                        <li><span>❌</span> Тратят 2-3 часа в день на поиск</li>
+                        <li><span>❌</span> Звонят по устаревшим базам</li>
+                        <li><span>❌</span> 80% отказов и "не туда попали"</li>
+                        <li><span>❌</span> Низкая мотивация отдела</li>
+                        <li><span>❌</span> План продаж не выполняется</li>
+                    </ul>
+                </div>
+                <div class="comparison-column comparison-after fade-in">
+                    <h3>✅ ПОСЛЕ</h3>
+                    <ul class="comparison-list">
+                        <li><span>✅</span> Готовая база из 10 000+ контактов</li>
+                        <li><span>✅</span> Менеджеры только звонят и продают</li>
+                        <li><span>✅</span> Актуальные данные (95% дозвона)</li>
+                        <li><span>✅</span> Теплые лиды, ЛПР напрямую</li>
+                        <li><span>✅</span> Рост мотивации и KPI</li>
+                        <li><span>✅</span> План выполняется на 120-150%</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="comparison-result fade-in">
+                Результат: рост продаж на 40-80% за первый месяц
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Form Section -->
+    <section class="cta-form" id="cta-form">
+        <div class="container">
+            <div class="form-container fade-in">
+                <h2 class="form-title">Получите тестовую базу из 100 контактов БЕСПЛАТНО</h2>
+                <p class="form-subtitle">Проверьте качество перед оплатой. Никаких обязательств. Отправим в течение 30 минут</p>
+                <form class="lead-form" id="leadForm">
+                    <div class="form-group">
+                        <label for="name">Ваше имя</label>
+                        <input type="text" id="name" name="name" placeholder="Как к вам обращаться?" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact">Телефон или Telegram (обязательно)</label>
+                        <input type="text" id="contact" name="contact" placeholder="+7 (___) ___-__-__ или @username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Какие данные нужны?</label>
+                        <textarea id="message" name="message" placeholder="Например: строительные компании Москвы, 500 шт"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary form-submit">🚀 Получить тестовую базу</button>
+                </form>
+                <p class="form-security">🔒 Ваши данные в безопасности. Не спамим, не передаем третьим лицам</p>
+                <div class="form-triggers">
+                    <div class="trigger-item">⚡ Среднее время ответа — 5 минут</div>
+                    <div class="trigger-item">📱 Работаем 24/7</div>
+                    <div class="trigger-item">💬 Отвечаем в Telegram за 2 минуты</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq">
+        <div class="container">
+            <h2 class="section-title fade-in">Ответы на популярные вопросы</h2>
+            <div class="faq-grid">
+                <div class="faq-item fade-in">
+                    <div class="faq-question">
+                        Как быстро будет готова база?
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Стандартный срок — 3-24 часа в зависимости от объема. Срочные заказы (от 3 часов) без доплаты.</p>
+                    </div>
+                </div>
+                <div class="faq-item fade-in">
+                    <div class="faq-question">
+                        Что если номера не отвечают?
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Мы гарантируем актуальность 95%+. Если более 5% контактов нерабочие — заменим базу бесплатно или вернем деньги.</p>
+                    </div>
+                </div>
+                <div class="faq-item fade-in">
+                    <div class="faq-question">
+                        Можно ли получить данные в другом формате?
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Да! Excel, CSV, Google Sheets, JSON, XML. Интеграция с AmoCRM, Bitrix24, Яндекс.Телефония.</p>
+                    </div>
+                </div>
+                <div class="faq-item fade-in">
+                    <div class="faq-question">
+                        Вы работаете по договору?
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Да, работаем с ИП и ООО по договору с закрывающими документами. Для физлиц — оплата на карту или через ЮKassa.</p>
+                    </div>
+                </div>
+                <div class="faq-item fade-in">
+                    <div class="faq-question">
+                        Какие источники используете?
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Любые открытые источники: сайты компаний, каталоги (2ГИС, Яндекс.Карты), соцсети, маркетплейсы, госзакупки, реестры.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contacts Section -->
+    <section class="contacts">
+        <div class="container">
+            <div class="contacts-content fade-in">
+                <h2 class="section-title">Остались вопросы? Давайте обсудим вашу задачу</h2>
+                <ul class="contact-list">
+                    <li>📱 Telegram: <a href="https://t.me/master_baza">@master_baza</a> (отвечаем за 2 минуты)</li>
+                    <li>📞 Телефон: <a href="tel:+70000000000">+7 (XXX) XXX-XX-XX</a></li>
+                    <li>✉️ Email: <a href="mailto:info@master-baza.ru">info@master-baza.ru</a></li>
+                    <li>⏰ Режим: работаем 24/7</li>
+                </ul>
+                <div class="messenger-buttons">
+                    <a href="https://t.me/master_baza" class="messenger-btn telegram">
+                        ✈️ Написать в Telegram
+                    </a>
+                    <a href="https://wa.me/70000000000" class="messenger-btn whatsapp">
+                        💬 Написать в WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">Мастер Баз</div>
+                <div class="footer-links">
+                    <a href="#">Политика конфиденциальности</a>
+                    <a href="#">Договор оферты</a>
+                    <a href="#">Реквизиты компании</a>
+                </div>
+            </div>
+            <p class="footer-copyright">© 2018-2026 Все права защищены</p>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top" id="scrollTop">↑</button>
+
+    <!-- Chat Widget -->
+    <div class="chat-widget" id="chatWidget">
+        <span class="chat-widget-text">Нужна помощь с выбором?</span>
+        <span class="chat-widget-icon">💬</span>
+    </div>
+
+    <!-- Exit Intent Popup -->
+    <div class="popup-overlay" id="exitPopup">
+        <div class="popup-content">
+            <span class="popup-close" id="popupClose">&times;</span>
+            <h3 class="popup-title">Подождите! 🎁</h3>
+            <p class="popup-text">Получите чек-лист "Как увеличить продажи на 50%" за подписку</p>
+            <form class="popup-form" id="popupForm">
+                <input type="email" placeholder="Ваш email" required>
+                <button type="submit">Получить чек-лист</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="notification" id="notification">
+        <div class="notification-icon">🎉</div>
+        <div class="notification-text">
+            <strong id="notifName">Иван из Москвы</strong>
+            только что заказал базу
+        </div>
+    </div>
+
+    <script>
+        // Timer Countdown
+        function updateTimer() {
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(0, 0, 0, 0);
+
+            const diff = tomorrow - now;
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        }
+
+        setInterval(updateTimer, 1000);
+        updateTimer();
+
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                const isActive = item.classList.contains('active');
+
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // Scroll to Top
+        const scrollTopBtn = document.getElementById('scrollTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Chat Widget
+        document.getElementById('chatWidget').addEventListener('click', () => {
+            window.location.href = 'https://t.me/master_baza';
+        });
+
+        // Exit Intent Popup
+        let popupShown = false;
+
+        function showPopup() {
+            if (!popupShown) {
+                document.getElementById('exitPopup').style.display = 'flex';
+                popupShown = true;
+            }
+        }
+
+        document.addEventListener('mouseleave', (e) => {
+            if (e.clientY < 0) {
+                showPopup();
+            }
+        });
+
+        document.getElementById('popupClose').addEventListener('click', () => {
+            document.getElementById('exitPopup').style.display = 'none';
+        });
+
+        document.getElementById('popupForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Спасибо! Чек-лист отправлен на вашу почту.');
+            document.getElementById('exitPopup').style.display = 'none';
+        });
+
+        // Notification Toast
+        const names = ['Иван из Москвы', 'Анна из СПб', 'Сергей из Казани', 'Ольга из Екатеринбурга', 'Дмитрий из Новосибирска'];
+
+        function showNotification() {
+            const notification = document.getElementById('notification');
+            const notifName = document.getElementById('notifName');
+
+            notifName.textContent = names[Math.floor(Math.random() * names.length)];
+            notification.style.display = 'flex';
+
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 5000);
+        }
+
+        // Show notification every 30 seconds
+        setTimeout(showNotification, 5000);
+        setInterval(showNotification, 30000);
+
+        // Lead Form Submission
+        document.getElementById('leadForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const contact = document.getElementById('contact').value;
+            const message = document.getElementById('message').value;
+
+            // Here you would typically send this to your backend
+            alert(`Спасибо, ${name}! Ваша заявка принята. Мы свяжемся с вами по контакту: ${contact} в течение 5 минут.`);
+
+            // Reset form
+            e.target.reset();
+        });
+
+        // Smooth Scroll for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Fade In Animation on Scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Header Background on Scroll
+        const header = document.querySelector('.header');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 100) {
+                header.style.background = 'rgba(26, 31, 58, 0.98)';
+            } else {
+                header.style.background = 'rgba(26, 31, 58, 0.95)';
+            }
+        });
+    </script>
+</body>
+</html>
