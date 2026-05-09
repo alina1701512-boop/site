@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://твойлогин.github.io/название_репозитория/sitemap.xml
