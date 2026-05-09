@@ -26,15 +26,14 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://alina1701512-boop.github.io/site/">
     <meta property="og:locale" content="ru_RU">
-    <!-- <meta property="og:image" content="ссылка_на_картинку_превью.jpg"> -->
 
     <!-- === КАНОНИЧЕСКАЯ ССЫЛКА === -->
     <link rel="canonical" href="https://alina1701512-boop.github.io/site/">
     
-    <!-- === АЛЬТЕРНАТИВНАЯ ВЕРСИЯ (если нужно) === -->
+    <!-- === АЛЬТЕРНАТИВНАЯ ВЕРСИЯ === -->
     <link rel="alternate" href="https://alina1701512-boop.github.io/site/" hreflang="ru">
 
-    <!-- === МИКРОРАЗМЕТКА SCHEMA.ORG ДЛЯ ЯНДЕКСА И GOOGLE === -->
+    <!-- === МИКРОРАЗМЕТКА SCHEMA.ORG === -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -56,12 +55,12 @@
     }
     </script>
 
-    <!-- === ШРИФТЫ И СТИЛИ === -->
+    <!-- === ШРИФТЫ === -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-</head>
-<body>
+    
+    <style>
         * {
             margin: 0;
             padding: 0;
@@ -94,7 +93,6 @@
             padding: 0 20px;
         }
 
-        /* Sticky Header */
         .header {
             position: fixed;
             top: 0;
@@ -113,7 +111,6 @@
             align-items: center;
         }
 
-        /* Header Navigation */
         .header-nav {
             display: flex;
             align-items: center;
@@ -184,7 +181,6 @@
             box-shadow: 0 10px 30px rgba(249, 115, 22, 0.4);
         }
 
-        /* Promo Bar */
         .promo-bar {
             background: linear-gradient(90deg, var(--accent-purple), var(--accent-blue));
             text-align: center;
@@ -198,7 +194,6 @@
             50% { opacity: 0.8; }
         }
 
-        /* Hero Section */
         .hero {
             padding: 140px 0 80px;
             min-height: 100vh;
@@ -324,7 +319,6 @@
             color: var(--text-light);
         }
 
-        /* Pain Points Section */
         .pain-points {
             padding: 100px 0;
             background: rgba(0, 0, 0, 0.3);
@@ -382,7 +376,6 @@
             margin-top: 40px;
         }
 
-        /* Services Section */
         .services {
             padding: 100px 0;
         }
@@ -444,7 +437,6 @@
             color: var(--cta-orange);
         }
 
-        /* Pricing Section */
         .pricing {
             padding: 100px 0;
             background: rgba(0, 0, 0, 0.3);
@@ -540,7 +532,6 @@
             text-decoration: none;
         }
 
-        /* Advantages Section */
         .advantages {
             padding: 100px 0;
         }
@@ -582,7 +573,6 @@
             font-size: 15px;
         }
 
-        /* Process Section */
         .process {
             padding: 100px 0;
             background: rgba(0, 0, 0, 0.3);
@@ -635,7 +625,6 @@
             backdrop-filter: blur(10px);
         }
 
-        /* Cases Section */
         .cases {
             padding: 100px 0;
         }
@@ -692,7 +681,6 @@
             color: var(--cta-green);
         }
 
-        /* Stats Section */
         .stats {
             padding: 80px 0;
             background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
@@ -720,7 +708,6 @@
             opacity: 0.9;
         }
 
-        /* Testimonials Section */
         .testimonials {
             padding: 100px 0;
             background: rgba(0, 0, 0, 0.3);
@@ -775,7 +762,6 @@
             font-size: 14px;
         }
 
-        /* Comparison Section */
         .comparison {
             padding: 100px 0;
         }
@@ -832,7 +818,6 @@
             font-weight: 800;
         }
 
-        /* CTA Form Section */
         .cta-form {
             padding: 100px 0;
             background: rgba(0, 0, 0, 0.3);
@@ -925,7 +910,6 @@
             font-size: 14px;
         }
 
-        /* FAQ Section */
         .faq {
             padding: 100px 0;
         }
@@ -980,7 +964,6 @@
             transform: rotate(45deg);
         }
 
-        /* Contact Section */
         .contacts {
             padding: 100px 0;
             background: rgba(0, 0, 0, 0.3);
@@ -1046,7 +1029,6 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
-        /* Footer */
         .footer {
             padding: 60px 0 30px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -1093,7 +1075,6 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Scroll to Top Button */
         .scroll-top {
             position: fixed;
             bottom: 30px;
@@ -1125,7 +1106,6 @@
             box-shadow: 0 10px 30px rgba(249, 115, 22, 0.5);
         }
 
-        /* Chat Bot Widget */
         .chat-widget {
             position: fixed;
             bottom: 100px;
@@ -1155,7 +1135,6 @@
             font-size: 24px;
         }
 
-        /* Exit Intent Popup */
         .popup-overlay {
             position: fixed;
             top: 0;
@@ -1223,48 +1202,38 @@
             cursor: pointer;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .hero {
                 padding: 120px 0 60px;
             }
-
             .timer {
                 flex-wrap: wrap;
             }
-
             .pricing-card.popular {
                 transform: scale(1);
             }
-
             .pricing-card.popular:hover {
                 transform: translateY(-5px);
             }
-
             .form-container {
                 padding: 30px 20px;
             }
-
             .messenger-buttons {
                 flex-direction: column;
             }
-
             .messenger-btn {
                 width: 100%;
                 justify-content: center;
             }
-
             .footer-content {
                 flex-direction: column;
                 text-align: center;
             }
-
             .chat-widget {
                 display: none;
             }
         }
 
-        /* Animations */
         .fade-in {
             opacity: 0;
             transform: translateY(30px);
@@ -1276,7 +1245,6 @@
             transform: translateY(0);
         }
 
-        /* Notification Toast */
         .notification {
             position: fixed;
             bottom: 30px;
@@ -1321,6 +1289,7 @@
     </style>
 </head>
 <body>
+
     <!-- Promo Bar -->
     <div class="promo-bar">
         🔥 Скидка 20% на первый заказ до конца недели
@@ -1357,7 +1326,6 @@
                 <a href="#pricing" class="btn-secondary">Рассчитать стоимость за 5 минут</a>
             </div>
             <p class="urgency-text">⚡ Уже собрали 46570 баз для клиентов. Среднее время выполнения — от 1 часа</p>
-
             <div class="timer" id="timer">
                 <div class="timer-item">
                     <div class="timer-value" id="hours">23</div>
@@ -1403,7 +1371,7 @@
     </section>
 
     <!-- Services Section -->
-    <section class="services">
+    <section class="services" id="services">
         <div class="container">
             <h2 class="section-title fade-in">Какие данные соберем для вас?</h2>
             <div class="services-grid">
@@ -1503,7 +1471,7 @@
     </section>
 
     <!-- Advantages Section -->
-    <section class="advantages">
+    <section class="advantages" id="advantages">
         <div class="container">
             <h2 class="section-title fade-in">Почему 27240+ клиентов выбрали нас</h2>
             <div class="advantages-grid">
@@ -1581,7 +1549,7 @@
     </section>
 
     <!-- Cases Section -->
-    <section class="cases">
+    <section class="cases" id="cases">
         <div class="container">
             <h2 class="section-title fade-in">Реальные результаты наших клиентов</h2>
             <div class="cases-grid">
@@ -1832,7 +1800,7 @@
     </section>
 
     <!-- Contacts Section -->
-    <section class="contacts">
+    <section class="contacts" id="contacts">
         <div class="container">
             <div class="contacts-content fade-in">
                 <h2 class="section-title">Остались вопросы? Давайте обсудим вашу задачу</h2>
@@ -2010,7 +1978,6 @@
             }, 5000);
         }
 
-        // Show notification every 30 seconds
         setTimeout(showNotification, 5000);
         setInterval(showNotification, 30000);
 
@@ -2021,14 +1988,12 @@
             const contact = document.getElementById('contact').value;
             const message = document.getElementById('message').value;
 
-            // Here you would typically send this to your backend
             alert(`Спасибо, ${name}! Ваша заявка принята. Мы свяжемся с вами по контакту: ${contact} в течение 5 минут.`);
 
-            // Reset form
             e.target.reset();
         });
 
-        // Smooth Scroll for Anchor Links
+        // Smooth Scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -2039,7 +2004,7 @@
             });
         });
 
-        // Fade In Animation on Scroll
+        // Fade In Animation
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -2057,7 +2022,7 @@
             observer.observe(el);
         });
 
-        // Header Background on Scroll
+        // Header Background
         const header = document.querySelector('.header');
 
         window.addEventListener('scroll', () => {
