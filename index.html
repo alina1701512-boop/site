@@ -2033,73 +2033,182 @@
             }
         });
 
-        // === ОТПРАВКА ДАННЫХ ФОРМ В TELEGRAM ===
-        const TELEGRAM_BOT_TOKEN = '8624063695:AAHF7dbrIwsL66aCX6KXxSxgEhbDjTzM0mQ';
-        const TELEGRAM_CHAT_ID = '342298611'; // Замените на ваш ID чата (можно узнать через бота @userinfobot)
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // КОНФИГУРАЦИЯ - используем правильный токен из текущей версии
+    const BOT_TOKEN = '8624063695:AAHF7dbrUssL66aCX6KXxSxgEhbDjtT2hNQ';
+    const CHAT_ID = '342298611';
+    
+    // Время загрузки страницы для подсчета времени на сайте
+    const pageLoadTime = new Date();
+    
+    // Генерация ID сессии
+    const sessionId = Math.random().toString(36).substring(2, 10) + Date.now().toString(36);
+    
+    // Хранилище для анти-спама (сессия + IP эмулируем через localStorage)
+    const spamStorageKey = 'form_submit_history_' + sessionId;
+    
+    // Функция получения данных об устройстве
+    function getDeviceInfo() {
+        const ua = navigator.userAgent;
+        let browser = "Unknown";
+        let os = "Unknown";
+        
+        if (ua.indexOf("Chrome") > -1) browser = "Chrome";
+        else if (ua.indexOf("Safari") > -1) browser = "Safari";
+        else if (ua.indexOf("Firefox") > -1) browser = "Firefox";
+        else if (ua.indexOf("MSIE") > -1 || ua.indexOf("Trident") > -1) browser = "IE";
+        
+        if (ua.indexOf("Win") > -1) os = "Windows";
+        else if (ua.indexOf("Mac") > -1) os = "macOS";
+        else if (ua.indexOf("Linux") > -1) os = "Linux";
+        else if (ua.indexOf("Android") > -1) os = "Android";
+        else if (ua.indexOf("iPhone") > -1) os = "iOS";
+        
+        return `${browser} / ${os}`;
+    }
 
-        // Функция отправки сообщения в Telegram
-        async function sendToTelegram(message) {
-            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+    // Функция проверки на спам (не более 5 отправок за 60 минут)
+    function canSubmit() {
+        const now = Date.now();
+        const oneMinute = 60 * 1000;
+        const history = JSON.parse(localStorage.getItem(spamStorageKey) || '[]');
+        
+        // Очищаем историю старше 60 минут
+        const recentHistory = history.filter(time => now - time < 60 * oneMinute);
+        
+        if (recentHistory.length >= 5) {
+            return false;
+        }
+        
+        recentHistory.push(now);
+        localStorage.setItem(spamStorageKey, JSON.stringify(recentHistory));
+        return true;
+    }
+
+    // Функция отправки в Telegram
+    async function sendToTelegram(formData, formName, buttonText, pageUrl) {
+        if (!canSubmit()) {
+            alert('Слишком много запросов. Пожалуйста, подождите немного.');
+            return false;
+        }
+
+        const currentTime = new Date();
+        const timeString = currentTime.toLocaleDateString('ru-RU') + ' ' + currentTime.toLocaleTimeString('ru-RU');
+        const timeOnSite = Math.floor((currentTime - pageLoadTime) / 1000);
+        const minutes = Math.floor(timeOnSite / 60);
+        const seconds = timeOnSite % 60;
+        const timeOnSiteStr = `${minutes} мин ${seconds} сек`;
+        
+        const deviceInfo = getDeviceInfo();
+        
+        let message = `📝 Новая заявка\n\n`;
+        message += `🎁 Форма: ${formName}\n`;
+        message += `🔘 Кнопка: ${buttonText}\n\n`;
+        
+        if (formData.name) message += `👤 Имя: ${formData.name}\n`;
+        if (formData.email) message += `📧 Email: ${formData.email}\n`;
+        if (formData.phone) message += `📞 Телефон: ${formData.phone}\n`;
+        if (formData.telegram) message += `💬 Telegram: ${formData.telegram}\n`;
+        if (formData.message) message += `📝 ТЗ/пожелания: ${formData.message}\n`;
+        
+        message += `\n⏰ ${timeString}\n`;
+        message += `🔗 Страница: ${pageUrl}\n`;
+        message += `🌐 IP: Определяется сервером\n`;
+        message += `🖥️ ${deviceInfo}\n`;
+        message += `⏱️ На сайте: ${timeOnSiteStr}\n`;
+        message += `🆔 ID сессии: ${sessionId}`;
+
+        const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+        
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: message
+                })
+            });
+            return response.ok;
+        } catch (error) {
+            console.error('Ошибка сети:', error);
+            return false;
+        }
+    }
+
+    // Обработка всех форм на странице
+    const forms = document.querySelectorAll('form');
+    
+    forms.forEach(form => {
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
             
-            try {
-                await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        chat_id: TELEGRAM_CHAT_ID,
-                        text: message,
-                        parse_mode: 'HTML'
-                    })
-                });
-            } catch (error) {
-                console.error('Ошибка отправки в Telegram:', error);
-            }
-        }
-
-        // Получение информации о странице
-        function getPageInfo() {
-            return `🌐 Страница: ${window.location.href}`;
-        }
-
-        // Отслеживание отправки форм - собираем только контактные данные
-        document.querySelectorAll('form').forEach(form => {
-            form.addEventListener('submit', function(e) {
-                const formData = new FormData(this);
-                let contactData = '';
+            const formDataObj = {};
+            const inputs = form.querySelectorAll('input, textarea, select');
+            let hasName = false;
+            let hasContact = false;
+            
+            inputs.forEach(input => {
+                const val = input.value.trim();
+                const placeholder = input.placeholder ? input.placeholder.toLowerCase() : '';
+                const type = input.type ? input.type.toLowerCase() : '';
                 
-                // Собираем только контактные данные: имя, телефон, email, мессенджеры
-                for (let [key, value] of formData.entries()) {
-                    const keyLower = key.toLowerCase();
-                    // Фильтруем только поля с контактными данными
-                    if (keyLower.includes('name') || keyLower.includes('имя') ||
-                        keyLower.includes('phone') || keyLower.includes('тел') ||
-                        keyLower.includes('email') || keyLower.includes('mail') ||
-                        keyLower.includes('telegram') || keyLower.includes('tg') ||
-                        keyLower.includes('whatsapp') || keyLower.includes('wa') ||
-                        keyLower.includes('viber') || keyLower.includes('vk') ||
-                        keyLower.includes('instagram')) {
-                        contactData += `<b>${key}:</b> ${value}\n`;
-                    }
+                if (type === 'email' || placeholder.includes('email') || placeholder.includes('почта')) {
+                    if (val) { formDataObj.email = val; hasContact = true; }
                 }
-
-                // Если есть контактные данные, отправляем в Telegram
-                if (contactData) {
-                    const message = `
-<b>📩 НОВАЯ ЗАЯВКА С САЙТА</b>
-
-${contactData}
-${getPageInfo()}
-
-⏰ Время: ${new Date().toLocaleString('ru-RU')}
-                    `.trim();
-
-                    sendToTelegram(message);
-                    console.log('Заявка отправлена в Telegram:', message);
+                else if (type === 'tel' || placeholder.includes('телефон') || placeholder.includes('phone')) {
+                    if (val) { formDataObj.phone = val; hasContact = true; }
+                }
+                else if (placeholder.includes('telegram') || placeholder.includes('@')) {
+                    if (val) { formDataObj.telegram = val; hasContact = true; }
+                }
+                else if (placeholder.includes('имя') || type === 'text' && !hasName) {
+                    if (val) { formDataObj.name = val; hasName = true; }
+                }
+                else if (placeholder.includes('тз') || placeholder.includes('нужны') || input.tagName === 'TEXTAREA') {
+                    if (val) { formDataObj.message = val; }
                 }
             });
+
+            if (!hasName) {
+                alert('Пожалуйста, введите ваше имя.');
+                return;
+            }
+            
+            if (!hasContact) {
+                alert('Пожалуйста, укажите способ связи (телефон, email или Telegram).');
+                return;
+            }
+
+            let formName = "Форма обратной связи";
+            const formTitle = form.closest('div')?.previousElementSibling;
+            if (formTitle && ['H2', 'H3'].includes(formTitle.tagName)) {
+                formName = formTitle.innerText.trim();
+            }
+
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const buttonText = submitBtn ? submitBtn.innerText.trim() : 'Отправить';
+
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerText = 'Отправка...';
+            }
+
+            const success = await sendToTelegram(formDataObj, formName, buttonText, window.location.href);
+
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerText = buttonText;
+            }
+
+            if (success) {
+                alert(`Спасибо, ${formDataObj.name}! Мы ответим вам в ближайшее время.`);
+                form.reset();
+            } else {
+                alert('Произошла ошибка. Попробуйте позже или свяжитесь с нами напрямую в Telegram.');
+            }
         });
-    </script>
-</body>
-</html>
+    });
+});
+</script>
