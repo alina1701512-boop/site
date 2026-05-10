@@ -1853,7 +1853,7 @@
             <h3 class="popup-title">Подождите! 🎁</h3>
             <p class="popup-text">Получите чек-лист "Как увеличить продажи на 50%" за подписку</p>
             <form class="popup-form" id="popupForm">
-                <input type="email" placeholder="Ваш email" required>
+                <input type="email" id="popupEmail" placeholder="Ваш email" required>
                 <button type="submit">Получить чек-лист</button>
             </form>
         </div>
@@ -1940,12 +1940,6 @@
         });
 
         document.getElementById('popupClose').addEventListener('click', () => {
-            document.getElementById('exitPopup').style.display = 'none';
-        });
-
-        document.getElementById('popupForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('Спасибо! Чек-лист отправлен на вашу почту.');
             document.getElementById('exitPopup').style.display = 'none';
         });
 
@@ -2090,13 +2084,18 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ chat_id: CHAT_ID, text: message })
                     });
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        console.error('Telegram API error:', errorData);
+                    }
                     return response.ok;
                 } catch (error) {
-                    console.error(error);
+                    console.error('Network error:', error);
                     return false;
                 }
             }
 
+            // Обработка основной формы (тестовая база)
             const leadForm = document.getElementById('leadForm');
             if (leadForm) {
                 leadForm.addEventListener('submit', async function(e) {
@@ -2113,7 +2112,7 @@
                     else phone = contact;
                     
                     const formData = { name, phone, telegram, message };
-                    const success = await sendToTelegram(formData, 'Получите тестовую базу', 'Получить тестовую базу', window.location.href);
+                    const success = await sendToTelegram(formData, 'Получите тестовую базу БЕСПЛАТНО', 'Получить тестовую базу', window.location.href);
                     
                     if (success) {
                         alert(`Спасибо, ${name}! Мы ответим вам в ближайшее время.`);
@@ -2124,17 +2123,26 @@
                 });
             }
 
+            // Обработка формы попапа (чек-лист)
             const popupForm = document.getElementById('popupForm');
             if (popupForm) {
                 popupForm.addEventListener('submit', async function(e) {
                     e.preventDefault();
-                    const email = popupForm.querySelector('input[type="email"]').value.trim();
+                    const emailInput = document.getElementById('popupEmail');
+                    const email = emailInput ? emailInput.value.trim() : '';
+                    
                     if (!email) { alert('Введите email'); return; }
+                    
                     const formData = { email };
-                    await sendToTelegram(formData, 'Чек-лист "Как увеличить продажи на 50%"', 'Получить чек-лист', window.location.href);
-                    alert('Спасибо! Чек-лист отправлен на вашу почту.');
-                    document.getElementById('exitPopup').style.display = 'none';
-                    popupForm.reset();
+                    const success = await sendToTelegram(formData, 'Чек-лист "Как увеличить продажи на 50%"', 'Получить чек-лист', window.location.href);
+                    
+                    if (success) {
+                        alert('Спасибо! Чек-лист отправлен на вашу почту.');
+                        document.getElementById('exitPopup').style.display = 'none';
+                        if (emailInput) emailInput.value = '';
+                    } else {
+                        alert('Ошибка отправки. Попробуйте позже.');
+                    }
                 });
             }
         });
