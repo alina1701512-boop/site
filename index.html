@@ -2033,7 +2033,7 @@
             }
         });
 
-        // === ОТПРАВКА КЛИКОВ В TELEGRAM ===
+        // === ОТПРАВКА ДАННЫХ ФОРМ В TELEGRAM ===
         const TELEGRAM_BOT_TOKEN = '8624063695:AAHF7dbrIwsL66aCX6KXxSxgEhbDjTzM0mQ';
         const TELEGRAM_CHAT_ID = '342298611'; // Замените на ваш ID чата (можно узнать через бота @userinfobot)
 
@@ -2063,76 +2063,41 @@
             return `🌐 Страница: ${window.location.href}`;
         }
 
-        // Отслеживание кликов по всем интерактивным элементам
-        document.addEventListener('click', function(e) {
-            const target = e.target;
-            const tagName = target.tagName;
-            let elementInfo = '';
-            let clickType = '';
-
-            // Определяем тип элемента
-            if (tagName === 'A') {
-                clickType = '🔗 Ссылка';
-                elementInfo = `Текст: "${target.textContent.trim()}"\nURL: ${target.href}`;
-            } else if (tagName === 'BUTTON') {
-                clickType = '🔘 Кнопка';
-                elementInfo = `Текст: "${target.textContent.trim()}"`;
-            } else if (tagName === 'INPUT') {
-                clickType = '📝 Поле ввода';
-                elementInfo = `Тип: ${target.type}\nName: ${target.name || 'нет'}`;
-            } else if (tagName === 'FORM') {
-                clickType = '📋 Форма';
-                elementInfo = `ID: ${target.id || 'нет'}`;
-            } else {
-                // Проверяем, есть ли у элемента или его родителей классы кнопок
-                const btnElement = target.closest('button, a.btn-primary, a.btn-secondary, [class*="btn"]');
-                if (btnElement) {
-                    clickType = '🎯 Кнопка (class)';
-                    elementInfo = `Текст: "${btnElement.textContent.trim()}"\nКлассы: ${btnElement.className}`;
-                } else {
-                    clickType = '👆 Клик';
-                    elementInfo = `Элемент: ${tagName}\nКлассы: ${target.className || 'нет'}`;
-                }
-            }
-
-            const message = `
-<b>🖱️ КЛИК НА САЙТЕ</b>
-
-${clickType}
-${elementInfo}
-
-${getPageInfo()}
-
-⏰ Время: ${new Date().toLocaleString('ru-RU')}
-            `.trim();
-
-            sendToTelegram(message);
-            console.log('Клик отправлен в Telegram:', message);
-        });
-
-        // Отслеживание отправки форм
+        // Отслеживание отправки форм - собираем только контактные данные
         document.querySelectorAll('form').forEach(form => {
             form.addEventListener('submit', function(e) {
                 const formData = new FormData(this);
-                let formInfo = '';
+                let contactData = '';
                 
+                // Собираем только контактные данные: имя, телефон, email, мессенджеры
                 for (let [key, value] of formData.entries()) {
-                    formInfo += `${key}: ${value}\n`;
+                    const keyLower = key.toLowerCase();
+                    // Фильтруем только поля с контактными данными
+                    if (keyLower.includes('name') || keyLower.includes('имя') ||
+                        keyLower.includes('phone') || keyLower.includes('тел') ||
+                        keyLower.includes('email') || keyLower.includes('mail') ||
+                        keyLower.includes('telegram') || keyLower.includes('tg') ||
+                        keyLower.includes('whatsapp') || keyLower.includes('wa') ||
+                        keyLower.includes('viber') || keyLower.includes('vk') ||
+                        keyLower.includes('instagram')) {
+                        contactData += `<b>${key}:</b> ${value}\n`;
+                    }
                 }
 
-                const message = `
-<b>📩 ОТПРАВКА ФОРМЫ</b>
+                // Если есть контактные данные, отправляем в Telegram
+                if (contactData) {
+                    const message = `
+<b>📩 НОВАЯ ЗАЯВКА С САЙТА</b>
 
-Форма ID: ${this.id || 'нет'}
-${formInfo}
-
+${contactData}
 ${getPageInfo()}
 
 ⏰ Время: ${new Date().toLocaleString('ru-RU')}
-                `.trim();
+                    `.trim();
 
-                sendToTelegram(message);
-                console.log('Отправка формы в Telegram:', message);
+                    sendToTelegram(message);
+                    console.log('Заявка отправлена в Telegram:', message);
+                }
             });
         });
     </script>
