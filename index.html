@@ -2033,10 +2033,10 @@
             }
         });
 
-    <script>
+<script>
 document.addEventListener('DOMContentLoaded', function() {
-    // КОНФИГУРАЦИЯ
-    const BOT_TOKEN = '8624063695:AAHF7dbrIwsL66aCX6KXxSxgEhbDjTzM0mQ';
+    // КОНФИГУРАЦИЯ - используем правильный токен из текущей версии
+    const BOT_TOKEN = '8624063695:AAHF7dbrUssL66aCX6KXxSxgEhbDjtT2hNQ';
     const CHAT_ID = '342298611';
     
     // Время загрузки страницы для подсчета времени на сайте
@@ -2078,10 +2078,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const recentHistory = history.filter(time => now - time < 60 * oneMinute);
         
         if (recentHistory.length >= 5) {
-            return false; // Лимит превышен
+            return false;
         }
         
-        // Добавляем текущую попытку
         recentHistory.push(now);
         localStorage.setItem(spamStorageKey, JSON.stringify(recentHistory));
         return true;
@@ -2103,7 +2102,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const deviceInfo = getDeviceInfo();
         
-        // Формирование сообщения
         let message = `📝 Новая заявка\n\n`;
         message += `🎁 Форма: ${formName}\n`;
         message += `🔘 Кнопка: ${buttonText}\n\n`;
@@ -2116,11 +2114,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         message += `\n⏰ ${timeString}\n`;
         message += `🔗 Страница: ${pageUrl}\n`;
-        // IP адрес нельзя получить чисто на клиенте без сторонних API, оставляем заглушку или используем сервис
-        // Для простоты используем api.ipify.org если нужно, но это может замедлить отправку. 
-        // В рамках ТЗ оставим поле, но заполним его после запроса или оставим "Определяется сервером"
-        // Чтобы не усложнять и не зависеть от внешних API, напишем "Client Side"
-        message += `🌐 IP: Определяется сервером (Client)\n`; 
+        message += `🌐 IP: Определяется сервером\n`;
         message += `🖥️ ${deviceInfo}\n`;
         message += `⏱️ На сайте: ${timeOnSiteStr}\n`;
         message += `🆔 ID сессии: ${sessionId}`;
@@ -2130,22 +2124,13 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const response = await fetch(url, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     chat_id: CHAT_ID,
-                    text: message,
-                    parse_mode: 'HTML' // Используем HTML для эмодзи, хотя они работают и так
+                    text: message
                 })
             });
-            
-            if (response.ok) {
-                return true;
-            } else {
-                console.error('Ошибка Telegram:', await response.text());
-                return false;
-            }
+            return response.ok;
         } catch (error) {
             console.error('Ошибка сети:', error);
             return false;
@@ -2157,9 +2142,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     forms.forEach(form => {
         form.addEventListener('submit', async function(e) {
-            e.preventDefault(); // Останавливаем стандартную отправку
+            e.preventDefault();
             
-            // Сбор данных
             const formDataObj = {};
             const inputs = form.querySelectorAll('input, textarea, select');
             let hasName = false;
@@ -2167,63 +2151,28 @@ document.addEventListener('DOMContentLoaded', function() {
             
             inputs.forEach(input => {
                 const val = input.value.trim();
-                const nameAttr = input.name ? input.name.toLowerCase() : '';
                 const placeholder = input.placeholder ? input.placeholder.toLowerCase() : '';
                 const type = input.type ? input.type.toLowerCase() : '';
                 
-                // Определение типа поля
-                let fieldType = 'other';
-                if (nameAttr.includes('name') || placeholder.includes('имя') || type === 'text' && !hasContact && !hasName) {
-                     // Эвристика для имени: если поле текстовое и нет явных признаков телефона/email
-                     if (!val) return; // Пропускаем пустые
-                     if (!formDataObj.name) {
-                         formDataObj.name = val;
-                         hasName = true;
-                         return;
-                     }
+                if (type === 'email' || placeholder.includes('email') || placeholder.includes('почта')) {
+                    if (val) { formDataObj.email = val; hasContact = true; }
                 }
-                
-                if (type === 'email' || nameAttr.includes('email') || placeholder.includes('email') || placeholder.includes('почта')) {
-                    if (!val) return;
-                    formDataObj.email = val;
-                    hasContact = true;
-                    return;
+                else if (type === 'tel' || placeholder.includes('телефон') || placeholder.includes('phone')) {
+                    if (val) { formDataObj.phone = val; hasContact = true; }
                 }
-                
-                if (type === 'tel' || nameAttr.includes('phone') || nameAttr.includes('tel') || placeholder.includes('телефон') || placeholder.includes('phone')) {
-                    if (!val) return;
-                    formDataObj.phone = val;
-                    hasContact = true;
-                    return;
+                else if (placeholder.includes('telegram') || placeholder.includes('@')) {
+                    if (val) { formDataObj.telegram = val; hasContact = true; }
                 }
-
-                if (nameAttr.includes('telegram') || nameAttr.includes('tg') || placeholder.includes('telegram') || placeholder.includes('@')) {
-                     if (!val) return;
-                     formDataObj.telegram = val;
-                     hasContact = true;
-                     return;
+                else if (placeholder.includes('имя') || type === 'text' && !hasName) {
+                    if (val) { formDataObj.name = val; hasName = true; }
                 }
-
-                if (nameAttr.includes('message') || nameAttr.includes('comment') || nameAttr.includes('text') || placeholder.includes('сообщение') || placeholder.includes('комментарий') || placeholder.includes('тз')) {
-                    if (!val) return;
-                    formDataObj.message = val;
-                    return;
-                }
-                
-                // Если не определили точно, но поле заполнено и это не имя/контакт, кидаем в сообщение или игнорируем
-                // Для надежности берем первое незаполненное текстовое поле как имя, если имя еще не найдено
-                if (!hasName && type === 'text' && val) {
-                    formDataObj.name = val;
-                    hasName = true;
+                else if (placeholder.includes('тз') || placeholder.includes('нужны') || input.tagName === 'TEXTAREA') {
+                    if (val) { formDataObj.message = val; }
                 }
             });
 
-            // Валидация: Имя + (Телефон ИЛИ Email ИЛИ Telegram)
             if (!hasName) {
                 alert('Пожалуйста, введите ваше имя.');
-                // Подсветка поля имени, если возможно
-                const nameInput = form.querySelector('input[type="text"]');
-                if(nameInput) nameInput.focus();
                 return;
             }
             
@@ -2232,28 +2181,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            // Определение названия формы и кнопки
             let formName = "Форма обратной связи";
-            const formTitle = form.querySelector('h2, h3, .title, [class*="title"]');
-            if (formTitle) {
+            const formTitle = form.closest('div')?.previousElementSibling;
+            if (formTitle && ['H2', 'H3'].includes(formTitle.tagName)) {
                 formName = formTitle.innerText.trim();
-            } else {
-                // Пробуем найти заголовок над формой
-                let prevElement = form.previousElementSibling;
-                while(prevElement) {
-                    if (['H2', 'H3', 'H4'].includes(prevElement.tagName)) {
-                        formName = prevElement.innerText.trim();
-                        break;
-                    }
-                    prevElement = prevElement.previousElementSibling;
-                }
             }
 
-            const submitBtn = form.querySelector('button[type="submit"], input[type="submit"], button:not([type])');
+            const submitBtn = form.querySelector('button[type="submit"]');
             const buttonText = submitBtn ? submitBtn.innerText.trim() : 'Отправить';
 
-            // Отправка в Telegram
-            const originalBtnText = submitBtn ? submitBtn.innerText : '';
             if (submitBtn) {
                 submitBtn.disabled = true;
                 submitBtn.innerText = 'Отправка...';
@@ -2261,18 +2197,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const success = await sendToTelegram(formDataObj, formName, buttonText, window.location.href);
 
-            if (success) {
-                // Успешная отправка
-                const contactDisplay = formDataObj.phone || formDataObj.email || formDataObj.telegram;
-                alert(`Спасибо, мы ответим вам по этому номеру/связи: ${contactDisplay}`);
-                form.reset();
-            } else {
-                alert('Произошла ошибка при отправке. Попробуйте позже.');
-            }
-
             if (submitBtn) {
                 submitBtn.disabled = false;
-                submitBtn.innerText = originalBtnText;
+                submitBtn.innerText = buttonText;
+            }
+
+            if (success) {
+                alert(`Спасибо, ${formDataObj.name}! Мы ответим вам в ближайшее время.`);
+                form.reset();
+            } else {
+                alert('Произошла ошибка. Попробуйте позже или свяжитесь с нами напрямую в Telegram.');
             }
         });
     });
