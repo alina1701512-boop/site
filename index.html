@@ -1956,21 +1956,23 @@
             return num.toString();
         }
 
-        function showNotification() {
-            const notification = document.getElementById('notification');
-            const notifName = document.getElementById('notifName');
+       function showNotification() {
+    const notification = document.getElementById('notification');
+    const notifName = document.getElementById('notifName');
 
-            const randomName = names[Math.floor(Math.random() * names.length)];
-            const randomContacts = contactsRange[Math.floor(Math.random() * contactsRange.length)];
-            const formattedContacts = formatContacts(randomContacts);
+    const randomName = names[Math.floor(Math.random() * names.length)];
+    const randomContacts = contactsRange[Math.floor(Math.random() * contactsRange.length)];
+    const formattedContacts = formatContacts(randomContacts);
 
-            notifName.innerHTML = `${randomName}<br>только что заказал базу<br><span style="color: var(--cta-orange); font-weight: 700;">${formattedContacts} контактов</span>`;
-            notification.style.display = 'flex';
+    // ВОТ ЭТУ СТРОКУ МЕНЯЕМ (было повторение "базу" дважды):
+    notifName.innerHTML = `${randomName}<br>заказал(а) прямо сейчас<br><span style="color: var(--cta-orange); font-weight: 700;">${formattedContacts} контактов</span>`;
+    
+    notification.style.display = 'flex';
 
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 5000);
-        }
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 5000);
+}
 
         setTimeout(showNotification, 5000);
         setInterval(showNotification, 30000);
