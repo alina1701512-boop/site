@@ -1867,7 +1867,7 @@
         </div>
     </div>
 
-    <script>
+        <script>
         // Timer Countdown
         function updateTimer() {
             const now = new Date();
@@ -1893,9 +1893,7 @@
             question.addEventListener('click', () => {
                 const item = question.parentElement;
                 const isActive = item.classList.contains('active');
-
                 document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
-
                 if (!isActive) {
                     item.classList.add('active');
                 }
@@ -1904,7 +1902,6 @@
 
         // Scroll to Top
         const scrollTopBtn = document.getElementById('scrollTop');
-
         window.addEventListener('scroll', () => {
             if (window.pageYOffset > 300) {
                 scrollTopBtn.classList.add('visible');
@@ -1912,7 +1909,6 @@
                 scrollTopBtn.classList.remove('visible');
             }
         });
-
         scrollTopBtn.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
@@ -1924,20 +1920,17 @@
 
         // Exit Intent Popup
         let popupShown = false;
-
         function showPopup() {
             if (!popupShown) {
                 document.getElementById('exitPopup').style.display = 'flex';
                 popupShown = true;
             }
         }
-
         document.addEventListener('mouseleave', (e) => {
             if (e.clientY < 0) {
                 showPopup();
             }
         });
-
         document.getElementById('popupClose').addEventListener('click', () => {
             document.getElementById('exitPopup').style.display = 'none';
         });
@@ -1955,23 +1948,18 @@
             return num.toString();
         }
 
-       function showNotification() {
-    const notification = document.getElementById('notification');
-    const notifName = document.getElementById('notifName');
-
-    const randomName = names[Math.floor(Math.random() * names.length)];
-    const randomContacts = contactsRange[Math.floor(Math.random() * contactsRange.length)];
-    const formattedContacts = formatContacts(randomContacts);
-
-    // ВОТ ЭТУ СТРОКУ МЕНЯЕМ (было повторение "базу" дважды):
-    notifName.innerHTML = `${randomName}<br>заказал(а) прямо сейчас<br><span style="color: var(--cta-orange); font-weight: 700;">${formattedContacts} контактов</span>`;
-    
-    notification.style.display = 'flex';
-
-    setTimeout(() => {
-        notification.style.display = 'none';
-    }, 5000);
-}
+        function showNotification() {
+            const notification = document.getElementById('notification');
+            const notifName = document.getElementById('notifName');
+            const randomName = names[Math.floor(Math.random() * names.length)];
+            const randomContacts = contactsRange[Math.floor(Math.random() * contactsRange.length)];
+            const formattedContacts = formatContacts(randomContacts);
+            notifName.innerHTML = `${randomName}<br>заказал(а) прямо сейчас<br><span style="color: var(--cta-orange); font-weight: 700;">${formattedContacts} контактов</span>`;
+            notification.style.display = 'flex';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 5000);
+        }
 
         setTimeout(showNotification, 5000);
         setInterval(showNotification, 30000);
@@ -1992,7 +1980,6 @@
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
         };
-
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -2000,14 +1987,12 @@
                 }
             });
         }, observerOptions);
-
         document.querySelectorAll('.fade-in').forEach(el => {
             observer.observe(el);
         });
 
         // Header Background
         const header = document.querySelector('.header');
-
         window.addEventListener('scroll', () => {
             if (window.pageYOffset > 100) {
                 header.style.background = 'rgba(26, 31, 58, 0.98)';
@@ -2017,136 +2002,122 @@
         });
     </script>
 
+    <!-- ====== НОВЫЙ БЛОК: ОТПРАВКА ФОРМ ====== -->
     <script>
-        // Telegram Bot - отправка только при отправке формы
-        document.addEventListener('DOMContentLoaded', function() {
-            const BOT_TOKEN = '8624063695:AAHF7dbrUssL66aCX6KXxSxgEhbDjtT2hNQ';
-            const CHAT_ID = '342298611';
-            
-            const pageLoadTime = new Date();
-            const sessionId = Math.random().toString(36).substring(2, 10) + Date.now().toString(36);
-            const spamStorageKey = 'form_submit_history_' + sessionId;
-            
-            function getDeviceInfo() {
-                const ua = navigator.userAgent;
-                let browser = "Unknown", os = "Unknown";
-                if (ua.indexOf("Chrome") > -1) browser = "Chrome";
-                else if (ua.indexOf("Safari") > -1) browser = "Safari";
-                else if (ua.indexOf("Firefox") > -1) browser = "Firefox";
-                else if (ua.indexOf("MSIE") > -1 || ua.indexOf("Trident") > -1) browser = "IE";
-                if (ua.indexOf("Win") > -1) os = "Windows";
-                else if (ua.indexOf("Mac") > -1) os = "macOS";
-                else if (ua.indexOf("Linux") > -1) os = "Linux";
-                else if (ua.indexOf("Android") > -1) os = "Android";
-                else if (ua.indexOf("iPhone") > -1) os = "iOS";
-                return `${browser} / ${os}`;
-            }
+    document.addEventListener('DOMContentLoaded', function() {
+        var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzija-zi50xG8weaG8j3UxhKITeJtIl0LOBO5DltShxFpAUzuJzej1ZMDSCCbXdgVZZ/exec';
+        
+        var pageLoadTime = new Date();
+        var spamStorageKey = 'form_submit_history';
+        
+        function canSubmit() {
+            var now = Date.now();
+            var history = JSON.parse(localStorage.getItem(spamStorageKey) || '[]');
+            var recentHistory = history.filter(function(time) { return now - time < 3600000; });
+            if (recentHistory.length >= 5) return false;
+            recentHistory.push(now);
+            localStorage.setItem(spamStorageKey, JSON.stringify(recentHistory));
+            return true;
+        }
 
-            function canSubmit() {
-                const now = Date.now();
-                const history = JSON.parse(localStorage.getItem(spamStorageKey) || '[]');
-                const recentHistory = history.filter(time => now - time < 60 * 60 * 1000);
-                if (recentHistory.length >= 5) return false;
-                recentHistory.push(now);
-                localStorage.setItem(spamStorageKey, JSON.stringify(recentHistory));
-                return true;
-            }
+        function getDeviceInfo() {
+            var ua = navigator.userAgent;
+            var browser = "Unknown", os = "Unknown";
+            if (ua.indexOf("Chrome") > -1) browser = "Chrome";
+            else if (ua.indexOf("Firefox") > -1) browser = "Firefox";
+            else if (ua.indexOf("Safari") > -1) browser = "Safari";
+            if (ua.indexOf("Win") > -1) os = "Windows";
+            else if (ua.indexOf("Mac") > -1) os = "macOS";
+            else if (ua.indexOf("Android") > -1) os = "Android";
+            else if (ua.indexOf("iPhone") > -1) os = "iOS";
+            return browser + ' / ' + os;
+        }
 
-            async function sendToTelegram(formData, formName, buttonText, pageUrl) {
-                if (!canSubmit()) {
-                    alert('Слишком много запросов. Пожалуйста, подождите немного.');
-                    return false;
-                }
-                const currentTime = new Date();
-                const timeString = currentTime.toLocaleDateString('ru-RU') + ' ' + currentTime.toLocaleTimeString('ru-RU');
-                const timeOnSite = Math.floor((currentTime - pageLoadTime) / 1000);
-                const minutes = Math.floor(timeOnSite / 60);
-                const seconds = timeOnSite % 60;
-                const deviceInfo = getDeviceInfo();
+        async function sendForm(data) {
+            if (!canSubmit()) {
+                alert('Слишком много запросов. Подождите немного.');
+                return false;
+            }
+            
+            var now = new Date();
+            data.time = now.toLocaleDateString('ru-RU') + ' ' + now.toLocaleTimeString('ru-RU');
+            data.deviceInfo = getDeviceInfo();
+            data.pageUrl = window.location.href;
+            var secOnSite = Math.floor((now - pageLoadTime) / 1000);
+            data.timeOnSite = Math.floor(secOnSite/60) + ' мин ' + (secOnSite%60) + ' сек';
+            
+            try {
+                var response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                var result = await response.json();
+                return result.success === true;
+            } catch (error) {
+                console.error('Ошибка:', error);
+                return false;
+            }
+        }
+
+        // Основная форма
+        var leadForm = document.getElementById('leadForm');
+        if (leadForm) {
+            leadForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                var name = document.getElementById('name').value.trim();
+                var contact = document.getElementById('contact').value.trim();
+                var message = document.getElementById('message').value.trim();
                 
-                let message = `📝 Новая заявка\n\n`;
-                message += `🎁 Форма: ${formName}\n`;
-                message += `🔘 Кнопка: ${buttonText}\n\n`;
-                if (formData.name) message += `👤 Имя: ${formData.name}\n`;
-                if (formData.email) message += `📧 Email: ${formData.email}\n`;
-                if (formData.phone) message += `📞 Телефон: ${formData.phone}\n`;
-                if (formData.telegram) message += `💬 Telegram: ${formData.telegram}\n`;
-                if (formData.message) message += `📝 ТЗ/пожелания: ${formData.message}\n`;
-                message += `\n⏰ ${timeString}\n`;
-                message += `🔗 Страница: ${pageUrl}\n`;
-                message += `🌐 IP: Определяется сервером\n`;
-                message += `🖥️ ${deviceInfo}\n`;
-                message += `⏱️ На сайте: ${minutes} мин ${seconds} сек\n`;
-                message += `🆔 ID сессии: ${sessionId}`;
-
-                try {
-                    const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ chat_id: CHAT_ID, text: message })
-                    });
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        console.error('Telegram API error:', errorData);
-                    }
-                    return response.ok;
-                } catch (error) {
-                    console.error('Network error:', error);
-                    return false;
+                if (!name || !contact) {
+                    alert('Заполните обязательные поля: Имя и Контакт');
+                    return;
                 }
-            }
+                
+                var data = {
+                    formName: 'Получите тестовую базу БЕСПЛАТНО',
+                    buttonText: 'Получить тестовую базу',
+                    name: name,
+                    phone: contact.indexOf('@') === 0 ? '' : contact,
+                    telegram: contact.indexOf('@') === 0 ? contact : '',
+                    message: message
+                };
+                
+                var ok = await sendForm(data);
+                if (ok) {
+                    alert('Спасибо, ' + name + '! Мы ответим вам в ближайшее время.');
+                    leadForm.reset();
+                } else {
+                    alert('Ошибка отправки. Напишите нам в Telegram: @masterbaza');
+                }
+            });
+        }
 
-            // Обработка основной формы (тестовая база)
-            const leadForm = document.getElementById('leadForm');
-            if (leadForm) {
-                leadForm.addEventListener('submit', async function(e) {
-                    e.preventDefault();
-                    const name = document.getElementById('name').value.trim();
-                    const contact = document.getElementById('contact').value.trim();
-                    const message = document.getElementById('message').value.trim();
-                    
-                    if (!name) { alert('Пожалуйста, введите ваше имя.'); return; }
-                    if (!contact) { alert('Пожалуйста, укажите телефон или Telegram.'); return; }
-                    
-                    let phone = '', telegram = '';
-                    if (contact.startsWith('@')) telegram = contact;
-                    else phone = contact;
-                    
-                    const formData = { name, phone, telegram, message };
-                    const success = await sendToTelegram(formData, 'Получите тестовую базу БЕСПЛАТНО', 'Получить тестовую базу', window.location.href);
-                    
-                    if (success) {
-                        alert(`Спасибо, ${name}! Мы ответим вам в ближайшее время.`);
-                        leadForm.reset();
-                    } else {
-                        alert('Ошибка отправки. Попробуйте позже или напишите нам в Telegram.');
-                    }
-                });
-            }
-
-            // Обработка формы попапа (чек-лист)
-            const popupForm = document.getElementById('popupForm');
-            if (popupForm) {
-                popupForm.addEventListener('submit', async function(e) {
-                    e.preventDefault();
-                    const emailInput = document.getElementById('popupEmail');
-                    const email = emailInput ? emailInput.value.trim() : '';
-                    
-                    if (!email) { alert('Введите email'); return; }
-                    
-                    const formData = { email };
-                    const success = await sendToTelegram(formData, 'Чек-лист "Как увеличить продажи на 50%"', 'Получить чек-лист', window.location.href);
-                    
-                    if (success) {
-                        alert('Спасибо! Чек-лист отправлен на вашу почту.');
-                        document.getElementById('exitPopup').style.display = 'none';
-                        if (emailInput) emailInput.value = '';
-                    } else {
-                        alert('Ошибка отправки. Попробуйте позже.');
-                    }
-                });
-            }
-        });
+        // Форма попапа
+        var popupForm = document.getElementById('popupForm');
+        if (popupForm) {
+            popupForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                var email = document.getElementById('popupEmail').value.trim();
+                if (!email) { alert('Введите email'); return; }
+                
+                var data = {
+                    formName: 'Чек-лист "Как увеличить продажи на 50%"',
+                    buttonText: 'Получить чек-лист',
+                    email: email
+                };
+                
+                var ok = await sendForm(data);
+                if (ok) {
+                    alert('Спасибо! Чек-лист отправлен на вашу почту.');
+                    document.getElementById('exitPopup').style.display = 'none';
+                } else {
+                    alert('Ошибка отправки. Попробуйте позже.');
+                }
+            });
+        }
+    });
     </script>
+
 </body>
 </html>
