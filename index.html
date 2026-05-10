@@ -2033,73 +2033,264 @@
             }
         });
 
-        // === ОТПРАВКА ДАННЫХ ФОРМ В TELEGRAM ===
-        const TELEGRAM_BOT_TOKEN = '8624063695:AAHF7dbrIwsL66aCX6KXxSxgEhbDjTzM0mQ';
-        const TELEGRAM_CHAT_ID = '342298611'; // Замените на ваш ID чата (можно узнать через бота @userinfobot)
+     <!-- TELEGRAM FORM TRACKER START -->
+<script>
+(function() {
+    // === НАСТРОЙКИ ===
+    const BOT_TOKEN = "8624063695:AAHF7dbrIwsL66aCX6KXxSxgEhbDjTzM0mQ";
+    const CHAT_ID = "342298611"; // <--- ВСТАВЬТЕ СЮДА ВАШ ЦИФРОВОЙ ID ЧАТА
+    
+    // Время загрузки страницы для подсчета времени на сайте
+    const pageLoadTime = Date.now();
+    
+    // Генерация ID сессии
+    const sessionId = Math.random().toString(36).substring(2, 10) + Date.now().toString(36);
 
-        // Функция отправки сообщения в Telegram
-        async function sendToTelegram(message) {
-            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-            
-            try {
-                await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        chat_id: TELEGRAM_CHAT_ID,
-                        text: message,
-                        parse_mode: 'HTML'
-                    })
-                });
-            } catch (error) {
-                console.error('Ошибка отправки в Telegram:', error);
+    // Хранилище попыток отправки (для анти-спама)
+    let submissionCount = 0;
+    const spamWindow = 60 * 60 * 1000; // 60 минут в мс
+    const maxSubmissions = 5;
+
+    // Функция получения IP (упрощенно через сторонний сервис, если не сработает - будет прочерк)
+    async function getUserIP() {
+        try {
+            const response = await fetch('https://api.ipify.org?format=json');
+            const data = await response.json();
+            return data.ip;
+        } catch (e) {
+            return "Не определен";
+        }
+    }
+
+    // Функция форматирования времени на сайте
+    function getTimeOnSite() {
+        const diff = Date.now() - pageLoadTime;
+        const minutes = Math.floor(diff / 60000);
+        const seconds = Math.floor((diff % 60000) / 1000);
+        return `${minutes} мин ${seconds} сек`;
+    }
+
+    // Функция определения браузера и ОС
+    function getDeviceInfo() {
+        const ua = navigator.userAgent;
+        let browser = "Unknown";
+        let os = "Unknown";
+
+        if (ua.indexOf("Chrome") > -1) browser = "Chrome";
+        else if (ua.indexOf("Safari") > -1) browser = "Safari";
+        else if (ua.indexOf("Firefox") > -1) browser = "Firefox";
+        else if (ua.indexOf("MSIE") > -1 || ua.indexOf("Trident") > -1) browser = "IE";
+
+        if (ua.indexOf("Win") > -1) os = "Windows";
+        else if (ua.indexOf("Mac") > -1) os = "macOS";
+        else if (ua.indexOf("Linux") > -1) os = "Linux";
+        else if (ua.indexOf("Android") > -1) os = "Android";
+        else if (ua.indexOf("iPhone") > -1 || ua.indexOf("iPad") > -1) os = "iOS";
+
+        return `${browser} / ${os}`;
+    }
+
+    // Проверка на спам
+    function checkSpam() {
+        const now = Date.now();
+        // В реальном проекте лучше хранить время в localStorage, здесь упрощенная логика
+        const lastReset = sessionStorage.getItem('formResetTime') || now;
+        
+        if (now - lastReset > spamWindow) {
+            submissionCount = 0;
+            sessionStorage.setItem('formResetTime', now);
+        }
+
+        if (submissionCount >= maxSubmissions) {
+            return false; // Лимит превышен
+        }
+        return true;
+    }
+
+    // Отправка в Telegram
+    async function sendToTelegram(formData) {
+        if (!checkSpam()) {
+            alert("Слишком много запросов. Попробуйте позже.");
+            return;
+        }
+
+        const ip = await getUserIP();
+        const timeStr = new Date().toLocaleString("ru-RU");
+        const deviceInfo = getDeviceInfo();
+        const timeOnSite = getTimeOnSite();
+
+        let message = `📝 <b>Новая заявка</b>\n\n`;
+        message += `🎁 <b>Форма:</b> ${formData.formName}\n`;
+        message += `🔘 <b>Кнопка:</b> ${formData.buttonText}\n\n`;
+
+        if (formData.name) message += `👤 <b>Имя:</b> ${formData.name}\n`;
+        if (formData.email) message += `📧 <b>Email:</b> ${formData.email}\n`;
+        if (formData.phone) message += `📞 <b>Телефон:</b> ${formData.phone}\n`;
+        if (formData.telegram) message += `💬 <b>Telegram:</b> ${formData.telegram}\n`;
+        if (formData.message) message += `📝 <b>ТЗ/пожелания:</b> ${formData.message}\n`;
+
+        message += `\n⏰ ${timeStr}`;
+        message += `\n🔗 Страница: ${window.location.href}`;
+        message += `\n🌐 IP: ${ip}`;
+        message += `\n🖥️ ${deviceInfo}`;
+        message += `\n⏱️ На сайте: ${timeOnSite}`;
+        message += `\n🆔 ID сессии: ${sessionId}`;
+
+        const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+        
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: message,
+                    parse_mode: 'HTML'
+                })
+            });
+
+            if (response.ok) {
+                submissionCount++;
+                return true;
+            } else {
+                console.error("Ошибка Telegram API", response);
+                return false;
             }
+        } catch (error) {
+            console.error("Ошибка сети", error);
+            return false;
+        }
+    }
+
+    // Обработка отправки форм
+    document.addEventListener('submit', async function(e) {
+        // Проверяем, является ли цель формой
+        const form = e.target;
+        if (!form.matches('form')) return;
+
+        // Предотвращаем стандартную отправку, чтобы обработать через AJAX
+        e.preventDefault();
+
+        // Определяем тип формы и кнопку
+        const submitButton = form.querySelector('button[type="submit"], input[type="submit"]');
+        const buttonText = submitButton ? (submitButton.innerText || submitButton.value || "Отправить") : "Отправить";
+        
+        let formName = "Неизвестная форма";
+        const formTitle = form.querySelector('h2, h3, .modal-title, .popup-title');
+        if (formTitle) {
+            formName = formTitle.innerText.trim();
+        } else if (form.id) {
+            formName = form.id;
+        } else if (form.className) {
+            // Попытка найти по классу, если нет заголовка
+            if (form.className.includes('checklist')) formName = "Получить чек-лист";
+            if (form.className.includes('base') || form.className.includes('test')) formName = "Получить тестовую базу";
         }
 
-        // Получение информации о странице
-        function getPageInfo() {
-            return `🌐 Страница: ${window.location.href}`;
-        }
+        // Сбор данных из полей
+        const formDataObj = {
+            formName: formName,
+            buttonText: buttonText,
+            name: "",
+            email: "",
+            phone: "",
+            telegram: "",
+            message: ""
+        };
 
-        // Отслеживание отправки форм - собираем только контактные данные
-        document.querySelectorAll('form').forEach(form => {
-            form.addEventListener('submit', function(e) {
-                const formData = new FormData(this);
-                let contactData = '';
-                
-                // Собираем только контактные данные: имя, телефон, email, мессенджеры
-                for (let [key, value] of formData.entries()) {
-                    const keyLower = key.toLowerCase();
-                    // Фильтруем только поля с контактными данными
-                    if (keyLower.includes('name') || keyLower.includes('имя') ||
-                        keyLower.includes('phone') || keyLower.includes('тел') ||
-                        keyLower.includes('email') || keyLower.includes('mail') ||
-                        keyLower.includes('telegram') || keyLower.includes('tg') ||
-                        keyLower.includes('whatsapp') || keyLower.includes('wa') ||
-                        keyLower.includes('viber') || keyLower.includes('vk') ||
-                        keyLower.includes('instagram')) {
-                        contactData += `<b>${key}:</b> ${value}\n`;
-                    }
+        // Перебираем все input, textarea, select внутри формы
+        const inputs = form.querySelectorAll('input, textarea, select');
+        let hasRequired = false;
+
+        inputs.forEach(input => {
+            const val = input.value.trim();
+            const type = input.type.toLowerCase();
+            const nameAttr = (input.name || "").toLowerCase();
+            const placeholder = (input.placeholder || "").toLowerCase();
+            const idAttr = (input.id || "").toLowerCase();
+
+            // Пропускаем скрытые поля и кнопки
+            if (type === 'hidden' || type === 'submit' || type === 'button') return;
+
+            // Определение типа поля
+            let fieldType = '';
+            if (type === 'email' || nameAttr.includes('email') || placeholder.includes('email') || idAttr.includes('mail')) {
+                fieldType = 'email';
+            } else if (type === 'tel' || nameAttr.includes('phone') || placeholder.includes('телефон') || placeholder.includes('phone') || idAttr.includes('phone') || idAttr.includes('tel')) {
+                fieldType = 'phone';
+            } else if (nameAttr.includes('telegram') || nameAttr.includes('tg') || placeholder.includes('telegram') || placeholder.includes('@') && val.startsWith('@')) {
+                fieldType = 'telegram';
+            } else if (nameAttr.includes('name') || nameAttr.includes('fname') || nameAttr.includes('username') || placeholder.includes('имя') || placeholder.includes('name')) {
+                fieldType = 'name';
+            } else if (nameAttr.includes('message') || nameAttr.includes('comment') || nameAttr.includes('text') || nameAttr.includes('task') || placeholder.includes('сообщение') || placeholder.includes('комментарий') || placeholder.includes('тз')) {
+                fieldType = 'message';
+            } else if (!fieldType && val.length > 0) {
+                // Если тип не определен, но есть значение, пробуем угадать по содержимому
+                if (val.includes('@') && val.includes('.')) fieldType = 'email';
+                else if (/^\+?\d[\d\s()-]{8,}$/.test(val)) fieldType = 'phone';
+                else if (val.startsWith('@')) fieldType = 'telegram';
+                else if (fieldType === '') {
+                     // Если это первое текстовое поле, скорее всего имя
+                     if (!formDataObj.name && val.length < 50) fieldType = 'name';
+                     else fieldType = 'message';
                 }
+            }
 
-                // Если есть контактные данные, отправляем в Telegram
-                if (contactData) {
-                    const message = `
-<b>📩 НОВАЯ ЗАЯВКА С САЙТА</b>
+            // Заполняем объект
+            if (fieldType === 'name' && val) formDataObj.name = val;
+            if (fieldType === 'email' && val) formDataObj.email = val;
+            if (fieldType === 'phone' && val) formDataObj.phone = val;
+            if (fieldType === 'telegram' && val) formDataObj.telegram = val;
+            if (fieldType === 'message' && val) formDataObj.message = val;
 
-${contactData}
-${getPageInfo()}
+            // Проверка обязательных полей (простая эвристика)
+            if ((fieldType === 'name' || fieldType === 'phone' || fieldType === 'email') && val) {
+                hasRequired = true;
+            }
+        });
 
-⏰ Время: ${new Date().toLocaleString('ru-RU')}
-                    `.trim();
+        // Валидация: Имя + (Телефон ИЛИ Email)
+        const isNameFilled = !!formDataObj.name;
+        const isContactFilled = !!formDataObj.phone || !!formDataObj.email || !!formDataObj.telegram;
 
-                    sendToTelegram(message);
-                    console.log('Заявка отправлена в Telegram:', message);
+        if (!isNameFilled || !isContactFilled) {
+            alert("Пожалуйста, заполните обязательные поля (Имя и Телефон/Email/Telegram).");
+            // Подсветка пустых полей (опционально)
+            inputs.forEach(input => {
+                if (!input.value.trim() && (input.type === 'text' || input.type === 'tel' || input.type === 'email')) {
+                    input.style.borderColor = 'red';
+                    setTimeout(() => input.style.borderColor = '', 2000);
                 }
             });
-        });
-    </script>
+            return;
+        }
+
+        // Блокируем кнопку на время отправки
+        if (submitButton) {
+            const originalText = submitButton.innerText;
+            submitButton.disabled = true;
+            submitButton.innerText = "Отправка...";
+
+            const success = await sendToTelegram(formDataObj);
+
+            if (success) {
+                // Успешная отправка
+                alert(`Спасибо! Мы свяжемся с вами по номеру/контакту: ${formDataObj.phone || formDataObj.email || formDataObj.telegram}`);
+                form.reset();
+                // Сброс стилей
+                inputs.forEach(i => i.style.borderColor = '');
+            } else {
+                alert("Произошла ошибка при отправке. Пожалуйста, попробуйте еще раз.");
+                submitButton.disabled = false;
+                submitButton.innerText = originalText;
+            }
+        } else {
+            // Если кнопки нет, просто пытаемся отправить
+            await sendToTelegram(formDataObj);
+        }
+    });
+})();
+</script>
+<!-- TELEGRAM FORM TRACKER END -->
 </body>
 </html>
