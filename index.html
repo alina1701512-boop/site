@@ -2032,6 +2032,109 @@
                 header.style.background = 'rgba(26, 31, 58, 0.95)';
             }
         });
+
+        // === ОТПРАВКА КЛИКОВ В TELEGRAM ===
+        const TELEGRAM_BOT_TOKEN = '8624063695:AAHF7dbrIwsL66aCX6KXxSxgEhbDjTzM0mQ';
+        const TELEGRAM_CHAT_ID = 'YOUR_CHAT_ID'; // Замените на ваш ID чата (можно узнать через бота @userinfobot)
+
+        // Функция отправки сообщения в Telegram
+        async function sendToTelegram(message) {
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+            
+            try {
+                await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: message,
+                        parse_mode: 'HTML'
+                    })
+                });
+            } catch (error) {
+                console.error('Ошибка отправки в Telegram:', error);
+            }
+        }
+
+        // Получение информации о странице
+        function getPageInfo() {
+            return `🌐 Страница: ${window.location.href}`;
+        }
+
+        // Отслеживание кликов по всем интерактивным элементам
+        document.addEventListener('click', function(e) {
+            const target = e.target;
+            const tagName = target.tagName;
+            let elementInfo = '';
+            let clickType = '';
+
+            // Определяем тип элемента
+            if (tagName === 'A') {
+                clickType = '🔗 Ссылка';
+                elementInfo = `Текст: "${target.textContent.trim()}"\nURL: ${target.href}`;
+            } else if (tagName === 'BUTTON') {
+                clickType = '🔘 Кнопка';
+                elementInfo = `Текст: "${target.textContent.trim()}"`;
+            } else if (tagName === 'INPUT') {
+                clickType = '📝 Поле ввода';
+                elementInfo = `Тип: ${target.type}\nName: ${target.name || 'нет'}`;
+            } else if (tagName === 'FORM') {
+                clickType = '📋 Форма';
+                elementInfo = `ID: ${target.id || 'нет'}`;
+            } else {
+                // Проверяем, есть ли у элемента или его родителей классы кнопок
+                const btnElement = target.closest('button, a.btn-primary, a.btn-secondary, [class*="btn"]');
+                if (btnElement) {
+                    clickType = '🎯 Кнопка (class)';
+                    elementInfo = `Текст: "${btnElement.textContent.trim()}"\nКлассы: ${btnElement.className}`;
+                } else {
+                    clickType = '👆 Клик';
+                    elementInfo = `Элемент: ${tagName}\nКлассы: ${target.className || 'нет'}`;
+                }
+            }
+
+            const message = `
+<b>🖱️ КЛИК НА САЙТЕ</b>
+
+${clickType}
+${elementInfo}
+
+${getPageInfo()}
+
+⏰ Время: ${new Date().toLocaleString('ru-RU')}
+            `.trim();
+
+            sendToTelegram(message);
+            console.log('Клик отправлен в Telegram:', message);
+        });
+
+        // Отслеживание отправки форм
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                const formData = new FormData(this);
+                let formInfo = '';
+                
+                for (let [key, value] of formData.entries()) {
+                    formInfo += `${key}: ${value}\n`;
+                }
+
+                const message = `
+<b>📩 ОТПРАВКА ФОРМЫ</b>
+
+Форма ID: ${this.id || 'нет'}
+${formInfo}
+
+${getPageInfo()}
+
+⏰ Время: ${new Date().toLocaleString('ru-RU')}
+                `.trim();
+
+                sendToTelegram(message);
+                console.log('Отправка формы в Telegram:', message);
+            });
+        });
     </script>
 </body>
 </html>
